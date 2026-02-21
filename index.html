@@ -31,14 +31,14 @@ body{
 }
 
 .logo-gif {
-    width: 90px;
+    width: 100px;
     filter: drop-shadow(0 0 8px rgba(200,200,200,0.4));
 }
 
 .logo-gif.left { transform: scaleX(-1); }
 
 .title {
-    font-size: 32px;
+    font-size: 34px;
     font-weight: bold;
     letter-spacing: 2px;
     background: linear-gradient(90deg, #888, #fff, #888);
@@ -54,20 +54,42 @@ body{
     100% { background-position: 200% center; }
 }
 
-/* ===== CONTEÚDO ===== */
+/* ===== CONTAINER ULTRAWIDE READY ===== */
 
 .container{
-    max-width:1100px;
+    width:95%;
+    max-width:2200px; /* suporta ultrawide */
     margin:auto;
-    padding:20px;
+    padding:30px 20px;
 }
 
-.globalItem, .world{
+/* ===== INPUT GLOBAL ===== */
+
+.globalItem{
     background:#151515;
     padding:20px;
     border-radius:14px;
-    margin-bottom:20px;
+    margin-bottom:25px;
     box-shadow:0 8px 20px rgba(0,0,0,0.6);
+}
+
+/* ===== GRID MUNDOS ===== */
+
+#worlds{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap:25px;
+}
+
+/* ===== CARD MUNDO ===== */
+
+.world{
+    background:#151515;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.6);
+    display:flex;
+    flex-direction:column;
 }
 
 .field{ margin-bottom:15px; }
@@ -108,22 +130,37 @@ button:hover{
     margin-top:10px;
 }
 
-/* ===== RESULTADOS ===== */
+/* ===== GRID RESULTADOS ===== */
 
-.results{ margin-top:40px; }
+.results{
+    margin-top:50px;
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap:25px;
+    align-items:stretch;
+}
+
+/* ===== CARD RESULTADO ===== */
 
 .resultCard{
     background:#101010;
     padding:20px;
     border-radius:14px;
-    margin-bottom:15px;
     box-shadow:0 5px 15px rgba(0,0,0,0.7);
     position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transition:0.3s;
+}
+
+.resultCard:hover{
+    transform:translateY(-3px);
 }
 
 .best{
     border:2px solid #999;
-    box-shadow:0 0 20px rgba(200,200,200,0.4);
+    box-shadow:0 0 25px rgba(200,200,200,0.4);
 }
 
 .highlight{
@@ -135,20 +172,20 @@ button:hover{
     position:absolute;
     top:15px;
     right:20px;
-    font-size:24px;
+    font-size:26px;
 }
 
 /* ===== HISTÓRICO ===== */
 
 .history{
-    margin-top:40px;
+    margin-top:60px;
     background:#0f0f0f;
-    padding:20px;
+    padding:25px;
     border-radius:14px;
 }
 
 .historyItem{
-    padding:10px;
+    padding:12px;
     border-bottom:1px solid #333;
     cursor:pointer;
 }
@@ -171,14 +208,13 @@ button:hover{
 <div class="container">
 
 <div class="globalItem">
-    <div class="field">
-        <label>Nome do Item (Identificação)</label>
-        <input type="text" id="globalItemName">
-    </div>
+    <label>Nome do Item (Identificação)</label>
+    <input type="text" id="globalItemName">
 </div>
 
 <div id="worlds"></div>
 
+<br>
 <button onclick="addWorld()">Adicionar Mundo</button>
 <button onclick="calculate()">Calcular Comparativo</button>
 
@@ -202,17 +238,13 @@ function parseGold(value){
 
 function parseMoney(value){
     if(!value) return 0;
-
     value = value.trim();
-
     if(value.includes(",") && !value.includes(".")){
         value = value.replace(",", ".");
     }
-
     if(value.includes(".") && value.includes(",")){
         value = value.replace(/\./g, "").replace(",", ".");
     }
-
     return parseFloat(value);
 }
 
@@ -271,23 +303,19 @@ function saveHistory(data){
 function loadHistory(){
     const history = JSON.parse(localStorage.getItem("history")) || [];
     let html="";
-
     history.forEach((entry,index)=>{
         html+=`
         <div class="historyItem" onclick='showHistory(${index})'>
             <strong>${entry.itemName}</strong><br>
             Mais barato: ${entry.cheapestName} - R$ ${entry.cheapestValue.toFixed(2)}
-        </div>
-        `;
+        </div>`;
     });
-
     document.getElementById("historyList").innerHTML = html;
 }
 
 function showHistory(index){
     const history = JSON.parse(localStorage.getItem("history")) || [];
-    const entry = history[index];
-    document.getElementById("results").innerHTML = entry.fullHTML;
+    document.getElementById("results").innerHTML = history[index].fullHTML;
 }
 
 function calculate(){
@@ -297,9 +325,7 @@ function calculate(){
     const itemName = document.getElementById("globalItemName").value || "Item sem nome";
 
     worlds.forEach(world=>{
-
         const id = world.id.replace("world","");
-
         const name = document.getElementById(`name${id}`).value;
         const tcGold = parseGold(document.getElementById(`tcGold${id}`).value);
         const itemGold = parseGold(document.getElementById(`itemGold${id}`).value);
@@ -315,50 +341,32 @@ function calculate(){
         const totalCoins = itemCoins + transferCoins;
         const totalReais = totalCoins * coinUnit;
 
-        worldsData.push({
-            name,
-            itemCoins,
-            transferCoins,
-            totalCoins,
-            totalReais
-        });
+        worldsData.push({ name,itemCoins,transferCoins,totalCoins,totalReais });
     });
 
     if(worldsData.length === 0) return;
 
     worldsData.sort((a,b)=>a.totalReais - b.totalReais);
     const cheapest = worldsData[0];
-
     const medals = ["🥇","🥈","🥉"];
 
     let html=`<h2>Item: ${itemName}</h2>`;
 
     worldsData.forEach((world,index)=>{
-
         const diff = world.totalReais - cheapest.totalReais;
 
         html+=`
         <div class="resultCard ${world.name===cheapest.name ? "best" : ""}">
             ${medals[index] ? `<div class="ranking">${medals[index]}</div>` : ""}
-
             <h3>${world.name}</h3>
-
             Item em Coins: ${world.itemCoins.toFixed(0)}<br>
             Transfer em Coins: ${world.transferCoins}<br><br>
-
-            <span class="highlight">
-            Total Coins: ${world.totalCoins.toFixed(0)}
-            </span><br>
-
-            <span class="highlight">
-            Total em R$: ${world.totalReais.toFixed(2)}
-            </span><br><br>
-
+            <span class="highlight">Total Coins: ${world.totalCoins.toFixed(0)}</span><br>
+            <span class="highlight">Total em R$: ${world.totalReais.toFixed(2)}</span><br><br>
             ${world.name!==cheapest.name ? 
             `Diferença para o mais barato: R$ ${diff.toFixed(2)}` 
             : `<span class="highlight">🔥 MAIS VANTAJOSO</span>`}
-        </div>
-        `;
+        </div>`;
     });
 
     document.getElementById("results").innerHTML=html;
