@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,119 +7,137 @@
 
 <style>
 body{
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#0f172a,#1e293b);
+    color:white;
     margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#111;
-    color:#eee;
-    text-align:center;
+    padding:0;
 }
 
-/* ===== HEADER PREMIUM CINZA ===== */
-.premium-header{
-    background:linear-gradient(145deg,#1a1a1a,#2a2a2a);
-    padding:25px 0;
-    border-bottom:2px solid #666;
-    box-shadow:0 0 20px rgba(200,200,200,0.2);
+/* ================= HEADER ================= */
+
+.premium-header {
+    background: linear-gradient(145deg, #111827, #1f2937);
+    padding: 25px 0;
+    border-bottom: 2px solid #6b7280;
+    box-shadow: 0 0 25px rgba(156,163,175,0.25);
 }
 
-.logo-container{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:30px;
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
 }
 
-.logo-gif{
-    width:90px;
-    filter:drop-shadow(0 0 8px rgba(200,200,200,0.5));
+.logo-gif {
+    width: 90px;
+    filter: drop-shadow(0 0 8px rgba(156,163,175,0.6));
 }
 
-.logo-gif.left{
-    transform:scaleX(-1);
+.logo-gif.left { transform: scaleX(-1); }
+
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #9ca3af, #e5e7eb, #9ca3af);
+    background-size: 200% auto;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: silverShine 4s linear infinite;
 }
 
-.title{
-    font-size:32px;
-    font-weight:bold;
-    letter-spacing:2px;
-    background:linear-gradient(90deg,#aaa,#fff,#aaa);
-    background-size:200% auto;
-    color:transparent;
-    background-clip:text;
-    -webkit-background-clip:text;
-    animation:silverShine 5s linear infinite;
+@keyframes silverShine {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
 }
 
-@keyframes silverShine{
-    0%{background-position:0% center;}
-    100%{background-position:200% center;}
+/* ================= CONTEÚDO ================= */
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
 }
 
-/* ===== INPUTS ===== */
+.globalItem{
+    background:#1f2937;
+    padding:20px;
+    border-radius:14px;
+    margin-bottom:20px;
+}
+
+.world{
+    background:#1f2937;
+    padding:20px;
+    border-radius:14px;
+    margin-bottom:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
+
+.field{
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    font-size:14px;
+    margin-bottom:5px;
+    color:#9ca3af;
+}
+
 input{
-    padding:8px;
-    margin:5px;
-    border-radius:5px;
+    width:100%;
+    padding:10px;
+    border-radius:8px;
     border:none;
-    width:150px;
+    background:#111827;
+    color:white;
 }
 
 button{
-    padding:10px 20px;
-    margin-top:10px;
+    padding:10px 15px;
     border:none;
-    border-radius:5px;
-    cursor:pointer;
-    background:#555;
-    color:#fff;
-}
-
-button:hover{
-    background:#777;
-}
-
-/* ===== RESULTADOS ===== */
-.resultados{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-top:30px;
-}
-
-.card{
-    background:#1e1e1e;
-    padding:20px;
     border-radius:10px;
-    width:200px;
-    box-shadow:0 0 15px rgba(255,255,255,0.1);
-    position:relative;
+    font-weight:bold;
+    cursor:pointer;
+    margin-right:10px;
 }
 
-.card h2{
-    margin:0;
+.addBtn{ background:#374151; color:white; }
+.calcBtn{ background:#4b5563; color:white; }
+.removeBtn{ background:#7f1d1d; color:white; margin-top:10px; }
+
+.results{ margin-top:40px; }
+
+.resultCard{
+    background:#111827;
+    padding:20px;
+    border-radius:14px;
+    margin-bottom:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.4);
 }
 
-.item-nome{
-    font-size:14px;
-    color:#bbb;
-    margin-bottom:10px;
+.best{
+    border:2px solid #9ca3af;
+    box-shadow:0 0 20px rgba(156,163,175,0.5);
 }
 
-.ranking{
-    font-size:28px;
-    position:absolute;
-    top:-15px;
-    left:50%;
-    transform:translateX(-50%);
+.highlight{
+    color:#e5e7eb;
+    font-weight:bold;
 }
 
-.vencedor{
-    border:2px solid #aaa;
-    box-shadow:0 0 20px rgba(255,255,255,0.4);
+.history{
+    margin-top:40px;
+    background:#0f172a;
+    padding:20px;
+    border-radius:14px;
 }
 </style>
 </head>
-
 <body>
 
 <header class="premium-header">
@@ -130,86 +148,207 @@ button:hover{
     </div>
 </header>
 
-<br>
+<div class="container">
 
-<input type="text" id="itemNome" placeholder="Nome do Item">
-<br>
-<input type="text" id="valorCoins" placeholder="Valor em Coins">
-<input type="text" id="valorKK" placeholder="Valor em KK">
-<br>
-<button onclick="calcular()">Calcular</button>
+<!-- NOVO CAMPO GLOBAL -->
+<div class="globalItem">
+    <div class="field">
+        <label>Nome do Item (Identificação)</label>
+        <input type="text" id="globalItemName">
+    </div>
+</div>
 
-<div class="resultados" id="resultados"></div>
+<div id="worlds"></div>
+
+<button class="addBtn" onclick="addWorld()">Adicionar Mundo</button>
+<button class="calcBtn" onclick="calculate()">Calcular Comparativo</button>
+
+<div id="results" class="results"></div>
+
+<!-- HISTÓRICO -->
+<div class="history">
+    <h3>Histórico de Consultas</h3>
+    <div id="historyList"></div>
+</div>
+
+</div>
 
 <script>
-function limparNumero(valor){
-    if(!valor) return 0;
-    valor = valor.replace(/\./g,'').replace(',','.');
-    return parseFloat(valor);
+
+let worldCount = 0;
+
+function parseGold(value){
+    if(!value) return 0;
+    return parseFloat(value.replace(/[^\d]/g, ""));
 }
 
-function salvarDados(dados){
-    localStorage.setItem("comparadorDados", JSON.stringify(dados));
-}
+function parseMoney(value){
+    if(!value) return 0;
 
-function carregarDados(){
-    const dados = localStorage.getItem("comparadorDados");
-    if(dados){
-        return JSON.parse(dados);
-    }
-    return null;
-}
+    value = value.trim();
 
-function calcular(){
-
-    const item = document.getElementById("itemNome").value;
-    const coins = limparNumero(document.getElementById("valorCoins").value);
-    const kk = limparNumero(document.getElementById("valorKK").value);
-
-    if(coins <= 0 || kk <= 0){
-        alert("Preencha os valores corretamente.");
-        return;
+    if(value.includes(",") && !value.includes(".")){
+        value = value.replace(",", ".");
     }
 
-    const valorPorKK = coins / kk;
+    if(value.includes(".") && value.includes(",")){
+        value = value.replace(/\./g, "").replace(",", ".");
+    }
 
-    const mundos = [
-        {nome:"Rubinot", preco:valorPorKK},
-        {nome:"Gentebra", preco:valorPorKK * 1.05},
-        {nome:"Belobra", preco:valorPorKK * 0.95}
-    ];
+    return parseFloat(value);
+}
 
-    mundos.sort((a,b)=>a.preco - b.preco);
+function addWorld(){
+    worldCount++;
 
-    const rankingIcon = ["🥇","🥈","🥉"];
+    const div = document.createElement("div");
+    div.className="world";
+    div.id="world"+worldCount;
 
+    div.innerHTML=`
+        <h3>Mundo ${worldCount}</h3>
+
+        <div class="field">
+            <label>Nome do Mundo</label>
+            <input type="text" id="name${worldCount}">
+        </div>
+
+        <div class="field">
+            <label>Preço da Coin (em gold)</label>
+            <input type="text" id="tcGold${worldCount}">
+        </div>
+
+        <div class="field">
+            <label>Valor do Item (em GOLD)</label>
+            <input type="text" id="itemGold${worldCount}">
+        </div>
+
+        <div class="field">
+            <label>Valor de 25 Coins (R$)</label>
+            <input type="text" id="coin25${worldCount}">
+        </div>
+
+        <div class="checkbox">
+            <input type="checkbox" id="transfer${worldCount}">
+            <label for="transfer${worldCount}">Incluir Transfer (990 Coins)</label>
+        </div>
+
+        <button class="removeBtn" onclick="removeWorld(${worldCount})">Remover</button>
+    `;
+
+    document.getElementById("worlds").appendChild(div);
+}
+
+function removeWorld(id){
+    document.getElementById("world"+id)?.remove();
+}
+
+function saveHistory(itemName, cheapestName, cheapestValue){
+    const history = JSON.parse(localStorage.getItem("history")) || [];
+
+    history.unshift({
+        itemName,
+        cheapestName,
+        cheapestValue,
+        date: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("history", JSON.stringify(history));
+    loadHistory();
+}
+
+function loadHistory(){
+    const history = JSON.parse(localStorage.getItem("history")) || [];
     let html="";
 
-    mundos.forEach((mundo,index)=>{
+    history.forEach(entry=>{
+        html+=`
+            <div style="margin-bottom:10px;">
+                <strong>${entry.itemName}</strong><br>
+                Mais barato: ${entry.cheapestName} - R$ ${entry.cheapestValue.toFixed(2)}<br>
+                <small>${entry.date}</small>
+            </div>
+        `;
+    });
+
+    document.getElementById("historyList").innerHTML = html;
+}
+
+function calculate(){
+
+    let worldsData = [];
+    const worlds = document.querySelectorAll(".world");
+    const itemName = document.getElementById("globalItemName").value || "Item sem nome";
+
+    worlds.forEach(world=>{
+
+        const id = world.id.replace("world","");
+
+        const name = document.getElementById(`name${id}`).value;
+        const tcGold = parseGold(document.getElementById(`tcGold${id}`).value);
+        const itemGold = parseGold(document.getElementById(`itemGold${id}`).value);
+        const coin25 = parseMoney(document.getElementById(`coin25${id}`).value);
+        const includeTransfer = document.getElementById(`transfer${id}`).checked;
+
+        if(!name || !tcGold || !itemGold || !coin25) return;
+
+        const itemCoins = itemGold / tcGold;
+        const coinUnit = coin25 / 25;
+        const transferCoins = includeTransfer ? 990 : 0;
+
+        const totalCoins = itemCoins + transferCoins;
+        const totalReais = totalCoins * coinUnit;
+
+        worldsData.push({
+            name,
+            itemCoins,
+            transferCoins,
+            totalCoins,
+            totalReais
+        });
+    });
+
+    if(worldsData.length === 0) return;
+
+    worldsData.sort((a,b)=>a.totalReais - b.totalReais);
+    const cheapest = worldsData[0];
+
+    saveHistory(itemName, cheapest.name, cheapest.totalReais);
+
+    let html=`<h2>Item: ${itemName}</h2>`;
+
+    worldsData.forEach(world=>{
+
+        const diff = world.totalReais - cheapest.totalReais;
 
         html+=`
-        <div class="card ${index==0?'vencedor':''}">
-            <div class="ranking">${rankingIcon[index]}</div>
-            <h2>${mundo.nome}</h2>
-            <div class="item-nome">${item}</div>
-            <p>${mundo.preco.toFixed(2)} coins por KK</p>
+        <div class="resultCard ${world.name===cheapest.name ? "best" : ""}">
+            <h3>${world.name}</h3>
+
+            Item em Coins: ${world.itemCoins.toFixed(0)}<br>
+            Transfer em Coins: ${world.transferCoins}<br><br>
+
+            <span class="highlight">
+            Total Coins: ${world.totalCoins.toFixed(0)}
+            </span><br>
+
+            <span class="highlight">
+            Total em R$: ${world.totalReais.toFixed(2)}
+            </span><br><br>
+
+            ${world.name!==cheapest.name ? 
+            `Diferença para o mais barato: R$ ${diff.toFixed(2)}` 
+            : `<span class="highlight">🔥 MAIS VANTAJOSO</span>`}
         </div>
         `;
     });
 
-    document.getElementById("resultados").innerHTML = html;
-
-    salvarDados({item,coins,kk});
+    document.getElementById("results").innerHTML=html;
 }
 
-window.onload = function(){
-    const dados = carregarDados();
-    if(dados){
-        document.getElementById("itemNome").value = dados.item;
-        document.getElementById("valorCoins").value = dados.coins;
-        document.getElementById("valorKK").value = dados.kk;
-    }
-}
+addWorld();
+loadHistory();
+
 </script>
 
 </body>
