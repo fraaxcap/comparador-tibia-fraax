@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RubinOT Comparator Pro</title>
+<title>Fravao Cap Comparativos</title>
 
 <style>
 body{
@@ -51,6 +51,13 @@ input{
     color:white;
 }
 
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:10px;
+}
+
 button{
     padding:10px 15px;
     border:none;
@@ -89,7 +96,7 @@ button{
 </head>
 <body>
 
-<h1>RubinOT Comparator Pro</h1>
+<h1>Fravao Cap Comparativos</h1>
 
 <div class="container">
 
@@ -103,7 +110,32 @@ button{
 </div>
 
 <script>
+
 let worldCount = 0;
+
+/* =========================
+   FUNÇÃO INTELIGENTE
+   ========================= */
+function parseNumber(value){
+    if(!value) return 0;
+
+    value = value.toString().trim();
+
+    if(value.includes(",") && value.includes(".")){
+        if(value.lastIndexOf(",") > value.lastIndexOf(".")){
+            value = value.replace(/\./g, "").replace(",", ".");
+        } else {
+            value = value.replace(/,/g, "");
+        }
+    }
+    else if(value.includes(",")){
+        value = value.replace(",", ".");
+    }
+
+    return parseFloat(value);
+}
+
+/* ========================= */
 
 function addWorld(){
     worldCount++;
@@ -117,29 +149,27 @@ function addWorld(){
 
         <div class="field">
             <label>Nome do Mundo</label>
-            <input type="text" id="name${worldCount}" placeholder="Ex: Draco">
+            <input type="text" id="name${worldCount}" placeholder="Ex: Vesperia">
         </div>
 
         <div class="field">
             <label>Preço da Coin (em gold)</label>
-            <input type="number" id="tcGold${worldCount}" placeholder="Ex: 50000">
+            <input type="text" id="tcGold${worldCount}" placeholder="Ex: 59.450 ou 59450">
         </div>
 
         <div class="field">
             <label>Valor do Item (em GOLD)</label>
-            <input type="text" id="itemGold${worldCount}" placeholder="Ex: 500000000 ou 500.000.000">
+            <input type="text" id="itemGold${worldCount}" placeholder="Ex: 500.000.000 ou 500000000">
         </div>
 
         <div class="field">
             <label>Valor de 25 Coins (R$)</label>
-            <input type="number" id="coin25${worldCount}" placeholder="Ex: 2.31" step="0.01">
+            <input type="text" id="coin25${worldCount}" placeholder="Ex: 2.35 ou 2,35">
         </div>
 
-        <div class="field">
-            <label>
-                <input type="checkbox" id="transfer${worldCount}">
-                Incluir Transfer (990 Coins)
-            </label>
+        <div class="checkbox">
+            <input type="checkbox" id="transfer${worldCount}">
+            <label for="transfer${worldCount}">Incluir Transfer (990 Coins)</label>
         </div>
 
         <button class="removeBtn" onclick="removeWorld(${worldCount})">Remover</button>
@@ -160,17 +190,14 @@ function calculate(){
     worlds.forEach(world=>{
 
         const id = world.id.replace("world","");
+
         const name = document.getElementById(`name${id}`).value;
-        const tcGold = parseFloat(document.getElementById(`tcGold${id}`).value);
-        let itemGoldRaw = document.getElementById(`itemGold${id}`).value;
-        const coin25 = parseFloat(document.getElementById(`coin25${id}`).value);
+        const tcGold = parseNumber(document.getElementById(`tcGold${id}`).value);
+        const itemGold = parseNumber(document.getElementById(`itemGold${id}`).value);
+        const coin25 = parseNumber(document.getElementById(`coin25${id}`).value);
         const includeTransfer = document.getElementById(`transfer${id}`).checked;
 
-        if(!name || !tcGold || !itemGoldRaw || !coin25) return;
-
-        // Remove pontos do número
-        itemGoldRaw = itemGoldRaw.replace(/\./g, "");
-        const itemGold = parseFloat(itemGoldRaw);
+        if(!name || !tcGold || !itemGold || !coin25) return;
 
         const itemCoins = itemGold / tcGold;
         const coinUnit = coin25 / 25;
@@ -227,6 +254,7 @@ function calculate(){
 }
 
 addWorld();
+
 </script>
 
 </body>
