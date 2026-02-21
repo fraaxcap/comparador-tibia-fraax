@@ -1,227 +1,156 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fravao Cap Comparativos</title>
+<title>Comparador Tibia - Fraax</title>
 
 <style>
 body{
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg,#0a0a0a,#1a1a1a);
-    color:#e5e5e5;
     margin:0;
-    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#0d0d0d;
+    color:#e5e5e5;
 }
 
-/* ===== HEADER ===== */
-
-.premium-header {
-    background: linear-gradient(145deg, #111, #1c1c1c);
-    padding: 25px 0;
-    border-bottom: 2px solid #555;
-    box-shadow: 0 0 25px rgba(200,200,200,0.15);
+/* HEADER */
+header{
+    text-align:center;
+    padding:25px;
+    font-size:28px;
+    font-weight:bold;
+    background:linear-gradient(90deg,#111,#1a1a1a,#111);
+    letter-spacing:2px;
+    border-bottom:1px solid #333;
 }
 
-.logo-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
-}
-
-.logo-gif {
-    width: 100px;
-    filter: drop-shadow(0 0 8px rgba(200,200,200,0.4));
-}
-
-.logo-gif.left { transform: scaleX(-1); }
-
-.title {
-    font-size: 34px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    background: linear-gradient(90deg, #888, #fff, #888);
-    background-size: 200% auto;
-    color: transparent;
-    background-clip: text;
-    -webkit-background-clip: text;
-    animation: silverShine 4s linear infinite;
-}
-
-@keyframes silverShine {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
-
-/* ===== CONTAINER ULTRAWIDE READY ===== */
-
+/* FORM */
 .container{
-    width:95%;
-    max-width:2200px; /* suporta ultrawide */
+    padding:20px;
+    max-width:1600px;
     margin:auto;
-    padding:30px 20px;
-}
-
-/* ===== INPUT GLOBAL ===== */
-
-.globalItem{
-    background:#151515;
-    padding:20px;
-    border-radius:14px;
-    margin-bottom:25px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.6);
-}
-
-/* ===== GRID MUNDOS ===== */
-
-#worlds{
-    display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap:25px;
-}
-
-/* ===== CARD MUNDO ===== */
-
-.world{
-    background:#151515;
-    padding:20px;
-    border-radius:14px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.6);
-    display:flex;
-    flex-direction:column;
-}
-
-.field{ margin-bottom:15px; }
-
-label{
-    display:block;
-    font-size:14px;
-    margin-bottom:5px;
-    color:#aaa;
 }
 
 input{
-    width:100%;
     padding:10px;
-    border-radius:8px;
-    border:none;
-    background:#0d0d0d;
-    color:white;
+    margin:5px;
+    background:#1a1a1a;
+    border:1px solid #333;
+    color:#fff;
+    border-radius:6px;
 }
 
 button{
     padding:10px 15px;
-    border:none;
-    border-radius:10px;
-    font-weight:bold;
-    cursor:pointer;
-    margin-right:10px;
-    background:#333;
+    margin:5px;
+    background:#2c2c2c;
+    border:1px solid #444;
     color:white;
+    border-radius:6px;
+    cursor:pointer;
+    transition:0.2s;
 }
 
 button:hover{
-    background:#555;
+    background:#3a3a3a;
 }
 
-.removeBtn{
-    background:#5a1a1a;
-    margin-top:10px;
-}
-
-/* ===== GRID RESULTADOS ===== */
-
+/* RESULTADOS */
 .results{
-    margin-top:50px;
     display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap:25px;
-    align-items:stretch;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+    margin-top:20px;
 }
 
-/* ===== CARD RESULTADO ===== */
-
-.resultCard{
-    background:#101010;
+/* CARD */
+.card{
+    background:#1a1a1a;
+    border:1px solid #333;
+    border-radius:12px;
     padding:20px;
-    border-radius:14px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.7);
+    text-align:center;
     position:relative;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    transition:0.3s;
+    transition:0.2s;
 }
 
-.resultCard:hover{
-    transform:translateY(-3px);
+.card:hover{
+    transform:scale(1.03);
+    border:1px solid #555;
 }
 
-.best{
-    border:2px solid #999;
-    box-shadow:0 0 25px rgba(200,200,200,0.4);
+.card img{
+    width:80px;
+    margin-bottom:10px;
 }
 
-.highlight{
-    color:#fff;
-    font-weight:bold;
-}
-
-.ranking{
+.rank{
     position:absolute;
-    top:15px;
-    right:20px;
-    font-size:26px;
+    top:10px;
+    right:10px;
+    font-size:20px;
 }
 
-/* ===== HISTÓRICO ===== */
-
+/* HISTÓRICO */
 .history{
-    margin-top:60px;
-    background:#0f0f0f;
-    padding:25px;
-    border-radius:14px;
+    margin-top:40px;
+    padding:20px;
+    background:#141414;
+    border-top:1px solid #333;
 }
 
 .historyItem{
-    padding:12px;
-    border-bottom:1px solid #333;
-    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#1a1a1a;
+    padding:10px;
+    margin-top:10px;
+    border-radius:8px;
+    border:1px solid #333;
 }
 
 .historyItem:hover{
-    background:#1a1a1a;
+    background:#222;
+}
+
+.deleteHistoryBtn{
+    background:#5a1a1a;
+    border:none;
+    padding:6px 10px;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+}
+
+.deleteHistoryBtn:hover{
+    background:#7a2222;
 }
 </style>
 </head>
+
 <body>
 
-<header class="premium-header">
-    <div class="logo-container">
-        <img src="Mage.gif" class="logo-gif left">
-        <h1 class="title">Fravao Cap Comparativos</h1>
-        <img src="Mage.gif" class="logo-gif">
-    </div>
+<header>
+Comparador Tibia - Fraax
 </header>
 
 <div class="container">
 
-<div class="globalItem">
-    <label>Nome do Item (Identificação)</label>
-    <input type="text" id="globalItemName">
-</div>
-
-<div id="worlds"></div>
-
-<br>
+<input type="text" id="itemName" placeholder="Nome do Item">
+<input type="text" id="worldName" placeholder="Nome do Mundo">
+<input type="number" id="coinValue" placeholder="Valor em Coin">
+<input type="number" id="kkValue" placeholder="Valor em KK">
 <button onclick="addWorld()">Adicionar Mundo</button>
-<button onclick="calculate()">Calcular Comparativo</button>
+<button onclick="calculate()">Calcular Ranking</button>
 
-<div id="results" class="results"></div>
+<div class="results" id="results"></div>
 
 <div class="history">
-    <h3>Histórico de Consultas</h3>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h3>Histórico de Consultas</h3>
+        <button onclick="clearHistory()">Limpar Histórico</button>
+    </div>
     <div id="historyList"></div>
 </div>
 
@@ -229,157 +158,129 @@ button:hover{
 
 <script>
 
-let worldCount = 0;
-
-function parseGold(value){
-    if(!value) return 0;
-    return parseFloat(value.replace(/[^\d]/g, ""));
-}
-
-function parseMoney(value){
-    if(!value) return 0;
-    value = value.trim();
-    if(value.includes(",") && !value.includes(".")){
-        value = value.replace(",", ".");
-    }
-    if(value.includes(".") && value.includes(",")){
-        value = value.replace(/\./g, "").replace(",", ".");
-    }
-    return parseFloat(value);
-}
+let worlds = [];
 
 function addWorld(){
-    worldCount++;
+    const worldName = document.getElementById("worldName").value;
+    const coinValue = parseFloat(document.getElementById("coinValue").value);
+    const kkValue = parseFloat(document.getElementById("kkValue").value);
 
-    const div = document.createElement("div");
-    div.className="world";
-    div.id="world"+worldCount;
+    if(!worldName || !coinValue || !kkValue){
+        alert("Preencha todos os campos do mundo.");
+        return;
+    }
 
-    div.innerHTML=`
-        <h3>Mundo ${worldCount}</h3>
+    worlds.push({
+        worldName,
+        coinValue,
+        kkValue,
+        total: coinValue * kkValue
+    });
 
-        <div class="field">
-            <label>Nome do Mundo</label>
-            <input type="text" id="name${worldCount}">
-        </div>
-
-        <div class="field">
-            <label>Preço da Coin (em gold)</label>
-            <input type="text" id="tcGold${worldCount}">
-        </div>
-
-        <div class="field">
-            <label>Valor do Item (em GOLD)</label>
-            <input type="text" id="itemGold${worldCount}">
-        </div>
-
-        <div class="field">
-            <label>Valor de 25 Coins (R$)</label>
-            <input type="text" id="coin25${worldCount}">
-        </div>
-
-        <div>
-            <input type="checkbox" id="transfer${worldCount}">
-            <label for="transfer${worldCount}">Incluir Transfer (990 Coins)</label>
-        </div>
-
-        <button class="removeBtn" onclick="removeWorld(${worldCount})">Remover</button>
-    `;
-
-    document.getElementById("worlds").appendChild(div);
+    document.getElementById("worldName").value="";
+    document.getElementById("coinValue").value="";
+    document.getElementById("kkValue").value="";
 }
 
-function removeWorld(id){
-    document.getElementById("world"+id)?.remove();
+function calculate(){
+
+    const itemName = document.getElementById("itemName").value;
+    if(!itemName){
+        alert("Digite o nome do item.");
+        return;
+    }
+
+    if(worlds.length < 1){
+        alert("Adicione pelo menos 1 mundo.");
+        return;
+    }
+
+    worlds.sort((a,b)=>a.total-b.total);
+
+    let html="";
+    worlds.forEach((w,index)=>{
+
+        let medal="";
+        if(index===0) medal="🥇";
+        if(index===1) medal="🥈";
+        if(index===2) medal="🥉";
+
+        html+=`
+        <div class="card">
+            <div class="rank">${medal}</div>
+            <img src="https://raw.githubusercontent.com/fraaxcap/comparador-tibia-fraax/main/Mage.gif">
+            <h2>${w.worldName}</h2>
+            <p><strong>${itemName}</strong></p>
+            <p>Coin: ${w.coinValue}</p>
+            <p>KK: ${w.kkValue}</p>
+            <h3>R$ ${w.total.toFixed(2)}</h3>
+        </div>
+        `;
+    });
+
+    document.getElementById("results").innerHTML=html;
+
+    saveHistory(itemName, worlds);
+
+    worlds=[];
 }
 
-function saveHistory(data){
+function saveHistory(itemName, worldsData){
+
     const history = JSON.parse(localStorage.getItem("history")) || [];
-    history.unshift(data);
+
+    history.unshift({
+        itemName,
+        worlds: worldsData
+    });
+
     localStorage.setItem("history", JSON.stringify(history));
     loadHistory();
 }
 
 function loadHistory(){
+
     const history = JSON.parse(localStorage.getItem("history")) || [];
     let html="";
+
     history.forEach((entry,index)=>{
+
         html+=`
-        <div class="historyItem" onclick='showHistory(${index})'>
-            <strong>${entry.itemName}</strong><br>
-            Mais barato: ${entry.cheapestName} - R$ ${entry.cheapestValue.toFixed(2)}
-        </div>`;
+        <div class="historyItem">
+            <div onclick='showHistory(${index})' style="cursor:pointer;">
+                <strong>${entry.itemName}</strong>
+            </div>
+            <button class="deleteHistoryBtn" onclick="deleteHistory(${index})">Excluir</button>
+        </div>
+        `;
     });
-    document.getElementById("historyList").innerHTML = html;
+
+    document.getElementById("historyList").innerHTML=html;
 }
 
 function showHistory(index){
+
     const history = JSON.parse(localStorage.getItem("history")) || [];
-    document.getElementById("results").innerHTML = history[index].fullHTML;
+    const entry = history[index];
+
+    worlds = entry.worlds;
+    document.getElementById("itemName").value = entry.itemName;
+    calculate();
 }
 
-function calculate(){
-
-    let worldsData = [];
-    const worlds = document.querySelectorAll(".world");
-    const itemName = document.getElementById("globalItemName").value || "Item sem nome";
-
-    worlds.forEach(world=>{
-        const id = world.id.replace("world","");
-        const name = document.getElementById(`name${id}`).value;
-        const tcGold = parseGold(document.getElementById(`tcGold${id}`).value);
-        const itemGold = parseGold(document.getElementById(`itemGold${id}`).value);
-        const coin25 = parseMoney(document.getElementById(`coin25${id}`).value);
-        const includeTransfer = document.getElementById(`transfer${id}`).checked;
-
-        if(!name || !tcGold || !itemGold || !coin25) return;
-
-        const itemCoins = itemGold / tcGold;
-        const coinUnit = coin25 / 25;
-        const transferCoins = includeTransfer ? 990 : 0;
-
-        const totalCoins = itemCoins + transferCoins;
-        const totalReais = totalCoins * coinUnit;
-
-        worldsData.push({ name,itemCoins,transferCoins,totalCoins,totalReais });
-    });
-
-    if(worldsData.length === 0) return;
-
-    worldsData.sort((a,b)=>a.totalReais - b.totalReais);
-    const cheapest = worldsData[0];
-    const medals = ["🥇","🥈","🥉"];
-
-    let html=`<h2>Item: ${itemName}</h2>`;
-
-    worldsData.forEach((world,index)=>{
-        const diff = world.totalReais - cheapest.totalReais;
-
-        html+=`
-        <div class="resultCard ${world.name===cheapest.name ? "best" : ""}">
-            ${medals[index] ? `<div class="ranking">${medals[index]}</div>` : ""}
-            <h3>${world.name}</h3>
-            Item em Coins: ${world.itemCoins.toFixed(0)}<br>
-            Transfer em Coins: ${world.transferCoins}<br><br>
-            <span class="highlight">Total Coins: ${world.totalCoins.toFixed(0)}</span><br>
-            <span class="highlight">Total em R$: ${world.totalReais.toFixed(2)}</span><br><br>
-            ${world.name!==cheapest.name ? 
-            `Diferença para o mais barato: R$ ${diff.toFixed(2)}` 
-            : `<span class="highlight">🔥 MAIS VANTAJOSO</span>`}
-        </div>`;
-    });
-
-    document.getElementById("results").innerHTML=html;
-
-    saveHistory({
-        itemName,
-        cheapestName: cheapest.name,
-        cheapestValue: cheapest.totalReais,
-        fullHTML: html
-    });
+function deleteHistory(index){
+    const history = JSON.parse(localStorage.getItem("history")) || [];
+    history.splice(index,1);
+    localStorage.setItem("history", JSON.stringify(history));
+    loadHistory();
 }
 
-addWorld();
+function clearHistory(){
+    localStorage.removeItem("history");
+    loadHistory();
+    document.getElementById("results").innerHTML="";
+}
+
 loadHistory();
 
 </script>
