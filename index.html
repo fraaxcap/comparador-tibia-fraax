@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fravao Cap - Comparativo Cross-World</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Martel:wght@400;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #9333ea;
             --bg-dark: #0a0a0c;
+            --spectral-bolt: #a855f7;
         }
 
         body {
@@ -28,16 +29,92 @@
         }
 
         .silver-text {
+            font-family: 'Martel', serif;
             background: linear-gradient(to right, #94a3b8, #ffffff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 200% auto;
             animation: shine 5s linear infinite;
-            white-space: nowrap; /* Garante que o texto não quebre em nenhuma circunstância */
+            white-space: nowrap; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding-bottom: 5px;
+            font-style: normal; 
+        }
+
+        .subtitle-text {
+            font-family: 'Martel', serif;
+            font-weight: 400;
         }
 
         @keyframes shine {
             to { background-position: 200% center; }
+        }
+
+        /* Container da Flecha Ajustado */
+        .arrow-container {
+            position: absolute;
+            width: 42px; 
+            height: 16px;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0;
+            top: 68px; 
+            /* Mudado para linear para manter velocidade constante (flecha não freia) */
+            animation: bolt-loop 4s infinite linear; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* SVG da Flecha Roxa */
+        .spectral-arrow {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 6px var(--spectral-bolt));
+        }
+
+        @keyframes bolt-loop {
+            /* IDA: Esquerda para Direita */
+            0% { 
+                left: -11%; /* Ajustado para encostar no Mage esquerdo */
+                opacity: 0; 
+                transform: scaleX(1); 
+            }
+            2% { 
+                opacity: 1; 
+            }
+            48% { 
+                left: 111%; /* Ajustado para encostar no Mage direito */
+                opacity: 1;
+                transform: scaleX(1);
+            }
+            49% { 
+                opacity: 0;
+                transform: scaleX(1);
+            }
+
+            /* VOLTA: Direita para Esquerda */
+            50% { 
+                left: 111%; 
+                opacity: 0; 
+                transform: scaleX(-1); 
+            }
+            52% { 
+                opacity: 1; 
+            }
+            98% { 
+                left: -22%; 
+                opacity: 1;
+                transform: scaleX(-1);
+            }
+            100% { 
+                opacity: 0; 
+                left: -11%;
+                transform: scaleX(-1);
+            }
         }
 
         .input-dark {
@@ -70,29 +147,53 @@
 </head>
 <body class="p-4 md:p-10">
 
-    <header class="max-w-6xl mx-auto mb-12 text-center">
-        <div class="flex items-center justify-center gap-2 md:gap-14 mb-4 px-2">
-            <div class="hidden sm:block">
+    <header class="max-w-6xl mx-auto mb-16 text-center relative overflow-visible">
+        <div class="flex items-center justify-center gap-2 md:gap-14 mb-2 px-2 overflow-visible relative">
+            
+            <!-- Mage da Esquerda -->
+            <div class="relative shrink-0 z-20">
                 <img src="https://raw.githubusercontent.com/fraaxcap/comparador-tibia-fraax/5e186fbf7e5fab55fedc614a8dbb7b49ff312cfe/Mage.gif" 
-                     alt="Mage Left" class="w-16 h-16 md:w-28 md:h-28 mirror opacity-90 drop-shadow-[0_0_15px_rgba(147,51,234,0.3)]">
+                     alt="Mage Esquerda" class="w-16 h-16 md:w-28 md:h-28 mirror opacity-90 drop-shadow-[0_0_15px_rgba(147,51,234,0.3)]">
             </div>
-            <div class="flex flex-col">
-                <!-- Adicionado pb-2 para evitar corte na letra P -->
-                <h1 class="text-3xl sm:text-5xl md:text-8xl font-black tracking-tighter silver-text italic px-2 pb-2 leading-tight">
+
+            <!-- Área Central -->
+            <div class="flex flex-col items-center justify-center overflow-visible pt-2 relative flex-1">
+                
+                <h1 class="text-3xl sm:text-5xl md:text-7xl font-black tracking-tighter silver-text px-2 z-10 relative">
                     FRAVAO CAP
                 </h1>
+
+                <!-- Projétil Spectral Arrow (Sincronizado e Linear) -->
+                <div class="absolute inset-0 pointer-events-none overflow-visible hidden sm:block">
+                    <div class="arrow-container">
+                        <svg class="spectral-arrow" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Corpo Robusto -->
+                            <path d="M15 10H85" stroke="#a855f7" stroke-width="3" stroke-linecap="round"/>
+                            <!-- Penas Traseiras -->
+                            <path d="M5 3L20 10L5 17" stroke="#a855f7" stroke-width="2.5" stroke-linejoin="round"/>
+                            <!-- Ponta Perfurante Branca com borda Roxa -->
+                            <path d="M78 3L97 10L78 17Z" fill="#fff" stroke="#a855f7" stroke-width="1.5"/>
+                            <!-- Brilho Interno (Core) -->
+                            <path d="M25 10H70" stroke="white" stroke-width="1" opacity="0.9" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <p class="subtitle-text text-slate-400 tracking-[0.3em] uppercase text-[10px] md:text-xs opacity-80 mt-6 z-10 relative">
+                    Comparativo de Itens Cross-World
+                </p>
             </div>
-            <div class="hidden sm:block">
+
+            <!-- Mage da Direita -->
+            <div class="relative shrink-0 z-20">
                 <img src="https://raw.githubusercontent.com/fraaxcap/comparador-tibia-fraax/5e186fbf7e5fab55fedc614a8dbb7b49ff312cfe/Mage.gif" 
-                     alt="Mage Right" class="w-16 h-16 md:w-28 md:h-28 opacity-90 drop-shadow-[0_0_15px_rgba(147,51,234,0.3)]">
+                     alt="Mage Direita" class="w-16 h-16 md:w-28 md:h-28 opacity-90 drop-shadow-[0_0_15px_rgba(147,51,234,0.3)]">
             </div>
         </div>
-        <p class="text-slate-400 font-medium tracking-[0.4em] uppercase text-[10px] md:text-xs opacity-70">
-            Comparativo de Itens Cross-World
-        </p>
     </header>
 
     <main class="max-w-6xl mx-auto space-y-8">
+        <!-- Inputs Globais -->
         <section class="glass-card rounded-3xl p-6 md:p-8 border-t border-purple-500/30">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 items-end">
                 <div class="lg:col-span-4">
@@ -122,8 +223,10 @@
             </div>
         </section>
 
+        <!-- Container de Mundos -->
         <div id="worldsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
+        <!-- Relatório -->
         <div id="resultsWrapper" class="hidden space-y-6 pt-10">
             <div class="flex items-center gap-4">
                 <div class="h-px flex-1 bg-gradient-to-l from-purple-500/30 to-transparent"></div>
@@ -133,10 +236,10 @@
             <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </div>
 
+        <!-- Histórico -->
         <section class="glass-card rounded-3xl p-6 md:p-8 mt-12">
             <div class="flex items-center justify-between mb-8">
                 <h3 class="text-xl font-bold text-white tracking-tight">Histórico</h3>
-                <!-- Botão Limpar ajustado para herdar o visual do btn-gradient -->
                 <button onclick="clearHistory()" class="btn-gradient px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest text-white hover:brightness-110 transition-all">
                     LIMPAR
                 </button>
@@ -181,26 +284,23 @@
                 </div>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Nome do Mundo</label>
+                        <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Nome do Mundo</label>
                         <input type="text" id="name-${worldCount}" placeholder="Ex: Antica" oninput="updateCardHeader(${worldCount}, this.value)" 
-                               class="w-full p-3 rounded-xl input-dark text-sm font-bold">
+                               class="w-full p-4 rounded-xl input-dark text-lg font-bold">
                     </div>
-                    
                     <div>
-                        <label class="block text-[9px] font-black text-purple-400 uppercase tracking-widest mb-1.5 ml-1">Preço TC</label>
+                        <label class="block text-xs font-black text-purple-400 uppercase tracking-widest mb-1.5 ml-1">PREÇO DO TC</label>
                         <input type="text" id="tcGold-${worldCount}" placeholder="Ex: 38.000" 
-                               class="w-full p-3 rounded-xl input-dark text-sm font-bold">
+                               class="w-full p-4 rounded-xl input-dark text-lg font-bold">
                     </div>
-
                     <div>
-                        <label class="block text-[9px] font-black text-purple-400 uppercase tracking-widest mb-1.5 ml-1">Preço do Item</label>
+                        <label class="block text-xs font-black text-purple-400 uppercase tracking-widest mb-1.5 ml-1">Preço do Item</label>
                         <input type="text" id="itemGold-${worldCount}" placeholder="Ex: 120.000.000" 
-                               class="w-full p-3 rounded-xl input-dark text-sm font-bold">
+                               class="w-full p-4 rounded-xl input-dark text-lg font-bold">
                     </div>
-
                     <label class="flex items-center gap-3 p-4 rounded-2xl bg-white/5 cursor-pointer hover:bg-white/10 border border-white/5 transition-all mt-2">
-                        <input type="checkbox" id="transfer-${worldCount}" class="h-5 w-5 rounded bg-slate-800 border-slate-600 text-purple-600 focus:ring-purple-500">
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Incluir 990 TC Transfer</span>
+                        <input type="checkbox" id="transfer-${worldCount}" class="h-6 w-6 rounded bg-slate-800 border-slate-600 text-purple-600 focus:ring-purple-500">
+                        <span class="text-xs font-black text-slate-400 uppercase tracking-tight">INCLUIR 990 TC DA TRANSFER</span>
                     </label>
                 </div>
             `;
