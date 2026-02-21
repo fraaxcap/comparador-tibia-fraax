@@ -114,22 +114,29 @@ button{
 let worldCount = 0;
 
 /* =========================
-   FUNÇÃO INTELIGENTE
+   FUNÇÃO PARA GOLD (sem decimal)
    ========================= */
-function parseNumber(value){
+function parseGold(value){
+    if(!value) return 0;
+    return parseFloat(value.replace(/[^\d]/g, ""));
+}
+
+/* =========================
+   FUNÇÃO PARA R$ (com decimal)
+   ========================= */
+function parseMoney(value){
     if(!value) return 0;
 
-    value = value.toString().trim();
+    value = value.trim();
 
-    if(value.includes(",") && value.includes(".")){
-        if(value.lastIndexOf(",") > value.lastIndexOf(".")){
-            value = value.replace(/\./g, "").replace(",", ".");
-        } else {
-            value = value.replace(/,/g, "");
-        }
-    }
-    else if(value.includes(",")){
+    // padrão brasileiro 2,35
+    if(value.includes(",") && !value.includes(".")){
         value = value.replace(",", ".");
+    }
+
+    // remove separador de milhar se existir
+    if(value.includes(".") && value.includes(",")){
+        value = value.replace(/\./g, "").replace(",", ".");
     }
 
     return parseFloat(value);
@@ -192,9 +199,9 @@ function calculate(){
         const id = world.id.replace("world","");
 
         const name = document.getElementById(`name${id}`).value;
-        const tcGold = parseNumber(document.getElementById(`tcGold${id}`).value);
-        const itemGold = parseNumber(document.getElementById(`itemGold${id}`).value);
-        const coin25 = parseNumber(document.getElementById(`coin25${id}`).value);
+        const tcGold = parseGold(document.getElementById(`tcGold${id}`).value);
+        const itemGold = parseGold(document.getElementById(`itemGold${id}`).value);
+        const coin25 = parseMoney(document.getElementById(`coin25${id}`).value);
         const includeTransfer = document.getElementById(`transfer${id}`).checked;
 
         if(!name || !tcGold || !itemGold || !coin25) return;
