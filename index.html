@@ -31,10 +31,20 @@ h1{
     box-shadow:0 8px 20px rgba(0,0,0,0.4);
 }
 
+.field{
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    font-size:14px;
+    margin-bottom:5px;
+    color:#94a3b8;
+}
+
 input{
     width:100%;
     padding:10px;
-    margin:6px 0;
     border-radius:8px;
     border:none;
     background:#111827;
@@ -47,15 +57,12 @@ button{
     border-radius:10px;
     font-weight:bold;
     cursor:pointer;
+    margin-right:10px;
 }
 
 .addBtn{ background:#22c55e; }
 .calcBtn{ background:#3b82f6; }
 .removeBtn{ background:#ef4444; margin-top:10px; }
-
-.transferBox{
-    margin-top:10px;
-}
 
 .results{
     margin-top:40px;
@@ -108,15 +115,27 @@ function addWorld(){
     div.innerHTML=`
         <h3>Mundo ${worldCount}</h3>
 
-        <input type="text" id="name${worldCount}" placeholder="Nome do Mundo">
+        <div class="field">
+            <label>Nome do Mundo</label>
+            <input type="text" id="name${worldCount}" placeholder="Ex: Draco">
+        </div>
 
-        <input type="number" id="tcGold${worldCount}" placeholder="Preço da Coin (gold)" min="1" step="1">
+        <div class="field">
+            <label>Preço da Coin (em gold)</label>
+            <input type="number" id="tcGold${worldCount}" placeholder="Ex: 50000">
+        </div>
 
-        <input type="number" id="itemKK${worldCount}" placeholder="Valor do Item (KK inteiro)" min="1" step="1">
+        <div class="field">
+            <label>Valor do Item (em GOLD)</label>
+            <input type="text" id="itemGold${worldCount}" placeholder="Ex: 500000000 ou 500.000.000">
+        </div>
 
-        <input type="number" id="coin25${worldCount}" placeholder="Valor de 25 Coins (R$)" min="0.01" step="0.01">
+        <div class="field">
+            <label>Valor de 25 Coins (R$)</label>
+            <input type="number" id="coin25${worldCount}" placeholder="Ex: 2.31" step="0.01">
+        </div>
 
-        <div class="transferBox">
+        <div class="field">
             <label>
                 <input type="checkbox" id="transfer${worldCount}">
                 Incluir Transfer (990 Coins)
@@ -143,13 +162,16 @@ function calculate(){
         const id = world.id.replace("world","");
         const name = document.getElementById(`name${id}`).value;
         const tcGold = parseFloat(document.getElementById(`tcGold${id}`).value);
-        const itemKK = parseInt(document.getElementById(`itemKK${id}`).value);
+        let itemGoldRaw = document.getElementById(`itemGold${id}`).value;
         const coin25 = parseFloat(document.getElementById(`coin25${id}`).value);
         const includeTransfer = document.getElementById(`transfer${id}`).checked;
 
-        if(!name || !tcGold || !itemKK || !coin25) return;
+        if(!name || !tcGold || !itemGoldRaw || !coin25) return;
 
-        const itemGold = itemKK * 1000000;
+        // Remove pontos do número
+        itemGoldRaw = itemGoldRaw.replace(/\./g, "");
+        const itemGold = parseFloat(itemGoldRaw);
+
         const itemCoins = itemGold / tcGold;
         const coinUnit = coin25 / 25;
 
