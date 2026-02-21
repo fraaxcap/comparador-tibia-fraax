@@ -8,19 +8,19 @@
 <style>
 body{
     font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg,#0f172a,#1e293b);
-    color:white;
+    background: linear-gradient(135deg,#0a0a0a,#1a1a1a);
+    color:#e5e5e5;
     margin:0;
     padding:0;
 }
 
-/* ================= HEADER ================= */
+/* ===== HEADER ===== */
 
 .premium-header {
-    background: linear-gradient(145deg, #111827, #1f2937);
+    background: linear-gradient(145deg, #111, #1c1c1c);
     padding: 25px 0;
-    border-bottom: 2px solid #6b7280;
-    box-shadow: 0 0 25px rgba(156,163,175,0.25);
+    border-bottom: 2px solid #555;
+    box-shadow: 0 0 25px rgba(200,200,200,0.15);
 }
 
 .logo-container {
@@ -32,7 +32,7 @@ body{
 
 .logo-gif {
     width: 90px;
-    filter: drop-shadow(0 0 8px rgba(156,163,175,0.6));
+    filter: drop-shadow(0 0 8px rgba(200,200,200,0.4));
 }
 
 .logo-gif.left { transform: scaleX(-1); }
@@ -41,7 +41,7 @@ body{
     font-size: 32px;
     font-weight: bold;
     letter-spacing: 2px;
-    background: linear-gradient(90deg, #9ca3af, #e5e7eb, #9ca3af);
+    background: linear-gradient(90deg, #888, #fff, #888);
     background-size: 200% auto;
     color: transparent;
     background-clip: text;
@@ -54,7 +54,7 @@ body{
     100% { background-position: 200% center; }
 }
 
-/* ================= CONTEÚDO ================= */
+/* ===== CONTEÚDO ===== */
 
 .container{
     max-width:1100px;
@@ -62,30 +62,21 @@ body{
     padding:20px;
 }
 
-.globalItem{
-    background:#1f2937;
+.globalItem, .world{
+    background:#151515;
     padding:20px;
     border-radius:14px;
     margin-bottom:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.6);
 }
 
-.world{
-    background:#1f2937;
-    padding:20px;
-    border-radius:14px;
-    margin-bottom:20px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.4);
-}
-
-.field{
-    margin-bottom:15px;
-}
+.field{ margin-bottom:15px; }
 
 label{
     display:block;
     font-size:14px;
     margin-bottom:5px;
-    color:#9ca3af;
+    color:#aaa;
 }
 
 input{
@@ -93,7 +84,7 @@ input{
     padding:10px;
     border-radius:8px;
     border:none;
-    background:#111827;
+    background:#0d0d0d;
     color:white;
 }
 
@@ -104,37 +95,66 @@ button{
     font-weight:bold;
     cursor:pointer;
     margin-right:10px;
+    background:#333;
+    color:white;
 }
 
-.addBtn{ background:#374151; color:white; }
-.calcBtn{ background:#4b5563; color:white; }
-.removeBtn{ background:#7f1d1d; color:white; margin-top:10px; }
+button:hover{
+    background:#555;
+}
+
+.removeBtn{
+    background:#5a1a1a;
+    margin-top:10px;
+}
+
+/* ===== RESULTADOS ===== */
 
 .results{ margin-top:40px; }
 
 .resultCard{
-    background:#111827;
+    background:#101010;
     padding:20px;
     border-radius:14px;
     margin-bottom:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.4);
+    box-shadow:0 5px 15px rgba(0,0,0,0.7);
+    position:relative;
 }
 
 .best{
-    border:2px solid #9ca3af;
-    box-shadow:0 0 20px rgba(156,163,175,0.5);
+    border:2px solid #999;
+    box-shadow:0 0 20px rgba(200,200,200,0.4);
 }
 
 .highlight{
-    color:#e5e7eb;
+    color:#fff;
     font-weight:bold;
 }
 
+.ranking{
+    position:absolute;
+    top:15px;
+    right:20px;
+    font-size:24px;
+}
+
+/* ===== HISTÓRICO ===== */
+
 .history{
     margin-top:40px;
-    background:#0f172a;
+    background:#0f0f0f;
     padding:20px;
     border-radius:14px;
+}
+
+.historyItem{
+    padding:10px;
+    border-bottom:1px solid #333;
+    cursor:pointer;
+}
+
+.historyItem:hover{
+    background:#1a1a1a;
 }
 </style>
 </head>
@@ -150,7 +170,6 @@ button{
 
 <div class="container">
 
-<!-- NOVO CAMPO GLOBAL -->
 <div class="globalItem">
     <div class="field">
         <label>Nome do Item (Identificação)</label>
@@ -160,12 +179,11 @@ button{
 
 <div id="worlds"></div>
 
-<button class="addBtn" onclick="addWorld()">Adicionar Mundo</button>
-<button class="calcBtn" onclick="calculate()">Calcular Comparativo</button>
+<button onclick="addWorld()">Adicionar Mundo</button>
+<button onclick="calculate()">Calcular Comparativo</button>
 
 <div id="results" class="results"></div>
 
-<!-- HISTÓRICO -->
 <div class="history">
     <h3>Histórico de Consultas</h3>
     <div id="historyList"></div>
@@ -228,7 +246,7 @@ function addWorld(){
             <input type="text" id="coin25${worldCount}">
         </div>
 
-        <div class="checkbox">
+        <div>
             <input type="checkbox" id="transfer${worldCount}">
             <label for="transfer${worldCount}">Incluir Transfer (990 Coins)</label>
         </div>
@@ -243,16 +261,9 @@ function removeWorld(id){
     document.getElementById("world"+id)?.remove();
 }
 
-function saveHistory(itemName, cheapestName, cheapestValue){
+function saveHistory(data){
     const history = JSON.parse(localStorage.getItem("history")) || [];
-
-    history.unshift({
-        itemName,
-        cheapestName,
-        cheapestValue,
-        date: new Date().toLocaleString()
-    });
-
+    history.unshift(data);
     localStorage.setItem("history", JSON.stringify(history));
     loadHistory();
 }
@@ -261,17 +272,22 @@ function loadHistory(){
     const history = JSON.parse(localStorage.getItem("history")) || [];
     let html="";
 
-    history.forEach(entry=>{
+    history.forEach((entry,index)=>{
         html+=`
-            <div style="margin-bottom:10px;">
-                <strong>${entry.itemName}</strong><br>
-                Mais barato: ${entry.cheapestName} - R$ ${entry.cheapestValue.toFixed(2)}<br>
-                <small>${entry.date}</small>
-            </div>
+        <div class="historyItem" onclick='showHistory(${index})'>
+            <strong>${entry.itemName}</strong><br>
+            Mais barato: ${entry.cheapestName} - R$ ${entry.cheapestValue.toFixed(2)}
+        </div>
         `;
     });
 
     document.getElementById("historyList").innerHTML = html;
+}
+
+function showHistory(index){
+    const history = JSON.parse(localStorage.getItem("history")) || [];
+    const entry = history[index];
+    document.getElementById("results").innerHTML = entry.fullHTML;
 }
 
 function calculate(){
@@ -313,16 +329,18 @@ function calculate(){
     worldsData.sort((a,b)=>a.totalReais - b.totalReais);
     const cheapest = worldsData[0];
 
-    saveHistory(itemName, cheapest.name, cheapest.totalReais);
+    const medals = ["🥇","🥈","🥉"];
 
     let html=`<h2>Item: ${itemName}</h2>`;
 
-    worldsData.forEach(world=>{
+    worldsData.forEach((world,index)=>{
 
         const diff = world.totalReais - cheapest.totalReais;
 
         html+=`
         <div class="resultCard ${world.name===cheapest.name ? "best" : ""}">
+            ${medals[index] ? `<div class="ranking">${medals[index]}</div>` : ""}
+
             <h3>${world.name}</h3>
 
             Item em Coins: ${world.itemCoins.toFixed(0)}<br>
@@ -344,6 +362,13 @@ function calculate(){
     });
 
     document.getElementById("results").innerHTML=html;
+
+    saveHistory({
+        itemName,
+        cheapestName: cheapest.name,
+        cheapestValue: cheapest.totalReais,
+        fullHTML: html
+    });
 }
 
 addWorld();
