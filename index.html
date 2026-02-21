@@ -3,138 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fravao Cap - Premium Tibia Tools</title>
+    <title>Fravao Cap - Comparativo Cross-World</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #9333ea;
+            --bg-dark: #0a0a0c;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0a0a0c;
+            background-color: var(--bg-dark);
             color: #e2e8f0;
-            background-image: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #0a0a0c 100%);
+            background-image: radial-gradient(circle at 50% -20%, #2e1a4d 0%, #0a0a0c 100%);
             min-height: 100vh;
         }
 
         .glass-card {
-            background: rgba(25, 25, 35, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            background: rgba(17, 17, 23, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(168, 85, 247, 0.15);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7);
         }
 
         .silver-text {
-            background: linear-gradient(to right, #94a3b8, #f8fafc, #94a3b8);
+            background: linear-gradient(to right, #94a3b8, #ffffff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 200% auto;
-            animation: shine 4s linear infinite;
+            animation: shine 5s linear infinite;
+            white-space: nowrap; /* Garante que o texto não quebre em nenhuma circunstância */
         }
 
         @keyframes shine {
             to { background-position: 200% center; }
         }
 
-        .gold-border {
-            border: 1px solid #d4af37;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-        }
-
         .input-dark {
             background: rgba(10, 10, 15, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.1);
             color: white;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
 
         .input-dark:focus {
-            border-color: #6366f1;
+            border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.15);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
-            transition: transform 0.1s, filter 0.2s;
+        .btn-gradient {
+            background: linear-gradient(135deg, #9333ea 0%, #6b21a8 100%);
         }
 
-        .btn-primary:active { transform: scale(0.98); }
-        .btn-primary:hover { filter: brightness(1.2); }
+        .medal-1 { color: #fbbf24; }
+        .medal-2 { color: #94a3b8; }
+        .medal-3 { color: #b45309; }
+        
+        .mirror { transform: scaleX(-1); }
 
-        .medal-1 { color: #ffd700; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5)); }
-        .medal-2 { color: #c0c0c0; filter: drop-shadow(0 0 5px rgba(192, 192, 192, 0.5)); }
-        .medal-3 { color: #cd7f32; filter: drop-shadow(0 0 5px rgba(205, 127, 50, 0.5)); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9333ea; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-10">
 
-    <!-- Header Section -->
-    <header class="max-w-7xl mx-auto mb-10 text-center">
-        <div class="flex items-center justify-center gap-6 mb-4">
-            <div class="hidden md:block opacity-50 text-4xl">🧙‍♂️</div>
-            <h1 class="text-4xl md:text-6xl font-bold tracking-tighter silver-text">
-                FRAVAO CAP
-            </h1>
-            <div class="hidden md:block opacity-50 text-4xl">🧙‍♂️</div>
+    <header class="max-w-6xl mx-auto mb-12 text-center">
+        <div class="flex items-center justify-center gap-2 md:gap-14 mb-4 px-2">
+            <div class="hidden sm:block">
+                <img src="https://raw.githubusercontent.com/fraaxcap/comparador-tibia-fraax/5e186fbf7e5fab55fedc614a8dbb7b49ff312cfe/Mage.gif" 
+                     alt="Mage Left" class="w-16 h-16 md:w-28 md:h-28 mirror opacity-90 drop-shadow-[0_0_15px_rgba(147,51,234,0.3)]">
+            </div>
+            <div class="flex flex-col">
+                <!-- Ajustado o tamanho da fonte e forçado nowrap para manter em uma linha -->
+                <h1 class="text-3xl sm:text-5xl md:text-8xl font-black tracking-tighter silver-text italic px-2 leading-tight">
+                    FRAVAO CAP
+                </h1>
+            </div>
+            <div class="hidden sm:block">
+                <img src="https://raw.githubusercontent.com/fraaxcap/comparador-tibia-fraax/5e186fbf7e5fab55fedc614a8dbb7b49ff312cfe/Mage.gif" 
+                     alt="Mage Right" class="w-16 h-16 md:w-28 md:h-28 opacity-90 drop-shadow-[0_0_15px_rgba(147,51,234,0.3)]">
+            </div>
         </div>
-        <p class="text-slate-400 font-light tracking-widest uppercase text-sm">Comparativo de Itens Cross-World</p>
+        <p class="text-slate-400 font-medium tracking-[0.4em] uppercase text-[10px] md:text-xs opacity-70">
+            Comparativo de Itens Cross-World
+        </p>
     </header>
 
-    <main class="max-w-7xl mx-auto">
-        <!-- Global Item Selection -->
-        <section class="glass-card rounded-2xl p-6 mb-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-                <div class="w-full">
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-2 tracking-wider">Identificação do Item</label>
-                    <input type="text" id="globalItemName" placeholder="Ex: Soultainter, Falcon Greaves..." 
-                           class="w-full p-4 rounded-xl input-dark text-lg font-semibold">
+    <main class="max-w-6xl mx-auto space-y-8">
+        <section class="glass-card rounded-3xl p-6 md:p-8 border-t border-purple-500/30">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 items-end">
+                <div class="lg:col-span-4">
+                    <label class="block text-[10px] font-black text-purple-400 uppercase mb-2.5 tracking-widest">Item</label>
+                    <input type="text" id="globalItemName" placeholder="Ex: Soulbleeder..." 
+                           class="w-full p-4 rounded-2xl input-dark text-lg font-bold">
                 </div>
-                <div class="w-full">
-                    <label class="block text-xs font-semibold text-slate-500 uppercase mb-2 tracking-wider">Valor 25 Coins (R$)</label>
-                    <input type="text" id="globalCoin25" placeholder="Ex: 5,50" 
-                           class="w-full p-4 rounded-xl input-dark text-lg font-semibold border-indigo-500/30">
+                <div class="lg:col-span-3">
+                    <label class="block text-[10px] font-black text-purple-400 uppercase mb-2.5 tracking-widest">25 Coins (R$)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">R$</span>
+                        <input type="text" id="globalCoin25" placeholder="5,50" 
+                               class="w-full p-4 pl-12 rounded-2xl input-dark text-lg font-bold">
+                    </div>
                 </div>
-                <div class="flex gap-2 w-full lg:col-span-2">
-                    <button onclick="addWorld()" class="btn-primary flex-1 px-4 py-4 rounded-xl font-bold text-xs uppercase tracking-wider">
+                <div class="lg:col-span-5 flex flex-wrap gap-3">
+                    <button onclick="addWorld()" class="btn-gradient flex-1 min-w-[120px] px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-wider text-white hover:brightness-110 transition-all">
                         + Servidor
                     </button>
-                    <button onclick="calculate()" class="bg-emerald-600 hover:bg-emerald-500 flex-1 px-4 py-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all">
+                    <button onclick="calculate()" class="bg-white hover:bg-slate-100 text-slate-950 flex-1 min-w-[120px] px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-wider transition-all transform active:scale-95">
                         Calcular
                     </button>
-                    <button onclick="resetSearch()" class="bg-slate-800 hover:bg-slate-700 flex-1 px-4 py-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all border border-white/5">
-                        Reiniciar
+                    <button onclick="resetSearch()" class="bg-slate-800/50 hover:bg-slate-800 text-slate-400 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-wider transition-all border border-white/5">
+                        Reset
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- Worlds Input Grid -->
-        <div id="worldsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            <!-- Dynamic World Cards Inject Here -->
+        <div id="worldsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <div id="resultsWrapper" class="hidden space-y-6 pt-10">
+            <div class="flex items-center gap-4">
+                <div class="h-px flex-1 bg-gradient-to-l from-purple-500/30 to-transparent"></div>
+                <h2 class="text-xl font-black uppercase tracking-[0.2em] text-white">Relatório</h2>
+                <div class="h-px flex-1 bg-gradient-to-r from-purple-500/30 to-transparent"></div>
+            </div>
+            <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </div>
 
-        <!-- Results Display -->
-        <div id="resultsWrapper" class="hidden mb-12">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold flex items-center gap-2">
-                    <span class="text-indigo-400">📊</span> Resultados da Análise
-                </h2>
-            </div>
-            <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Results cards inject here -->
-            </div>
-        </div>
-
-        <!-- History Section -->
-        <section class="glass-card rounded-2xl p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-slate-300">Histórico Recente</h3>
-                <button onclick="clearHistory()" class="text-xs text-red-400 hover:text-red-300 uppercase font-bold tracking-widest">
-                    Limpar Tudo
+        <section class="glass-card rounded-3xl p-6 md:p-8 mt-12">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-xl font-bold text-white tracking-tight">Histórico</h3>
+                <button onclick="clearHistory()" class="text-[10px] text-red-400 hover:bg-red-500/10 px-4 py-2 rounded-full font-black tracking-widest transition-all">
+                    LIMPAR
                 </button>
             </div>
-            <div id="historyList" class="space-y-3">
-                <!-- History items -->
-            </div>
+            <div id="historyList" class="grid grid-cols-1 gap-4"></div>
         </section>
     </main>
 
@@ -144,16 +150,10 @@
 
         function parseTibiaGold(input) {
             if (!input) return 0;
-            let val = input.toLowerCase().trim().replace(/,/g, '.').replace(/\s/g, '');
-            
-            if (val.endsWith('kkk') || val.endsWith('b')) {
-                return parseFloat(val) * 1000000000;
-            } else if (val.endsWith('kk') || val.endsWith('m')) {
-                return parseFloat(val) * 1000000;
-            } else if (val.endsWith('k')) {
-                return parseFloat(val) * 1000;
-            }
-            
+            let val = input.toString().toLowerCase().trim().replace(/\./g, '').replace(/,/g, '.').replace(/\s/g, '');
+            if (val.endsWith('kkk') || val.endsWith('b')) return parseFloat(val) * 1000000000;
+            if (val.endsWith('kk') || val.endsWith('m')) return parseFloat(val) * 1000000;
+            if (val.endsWith('k')) return parseFloat(val) * 1000;
             return parseFloat(val.replace(/[^\d.]/g, '')) || 0;
         }
 
@@ -163,88 +163,70 @@
 
         function updateCardHeader(id, value) {
             const header = document.getElementById(`header-title-${id}`);
-            if (header) {
-                header.textContent = value.trim() !== "" ? value : `Servidor ${id}`;
-            }
+            if (header) header.textContent = value.trim() !== "" ? value : `Servidor ${id}`;
         }
 
         function addWorld() {
             worldCount++;
             const card = document.createElement('div');
-            card.className = 'glass-card rounded-xl p-5 relative group animate-in slide-in-from-bottom-4 duration-300';
+            card.className = 'glass-card rounded-3xl p-6 relative group animate-in slide-in-from-bottom-5 duration-300';
             card.id = `world-card-${worldCount}`;
-            
             card.innerHTML = `
-                <button onclick="removeWorld(${worldCount})" class="absolute top-4 right-4 text-slate-600 hover:text-red-400 transition-colors">
+                <button onclick="removeWorld(${worldCount})" class="absolute top-6 right-6 text-slate-600 hover:text-red-400 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
-                <div class="mb-4">
-                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em]">Configuração</span>
-                    <h4 id="header-title-${worldCount}" class="text-lg font-bold text-white truncate pr-8">Servidor ${worldCount}</h4>
+                <div class="mb-6">
+                    <h4 id="header-title-${worldCount}" class="text-xl font-black text-white truncate pr-10 italic">Servidor ${worldCount}</h4>
                 </div>
-                
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-[10px] text-slate-500 uppercase font-bold mb-1">Nome do Servidor</label>
-                        <input type="text" id="name-${worldCount}" placeholder="Ex: Antica" 
-                               oninput="updateCardHeader(${worldCount}, this.value)"
-                               class="w-full p-2.5 rounded-lg input-dark text-sm">
+                        <label class="block text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Nome do Mundo</label>
+                        <input type="text" id="name-${worldCount}" placeholder="Ex: Antica" oninput="updateCardHeader(${worldCount}, this.value)" 
+                               class="w-full p-3 rounded-xl input-dark text-sm font-bold">
                     </div>
                     
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-[10px] text-slate-500 uppercase font-bold mb-1">Preço TC (Gold)</label>
-                            <input type="text" id="tcGold-${worldCount}" placeholder="38.500" class="w-full p-2.5 rounded-lg input-dark text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] text-slate-500 uppercase font-bold mb-1">Valor Item (Gold)</label>
-                            <input type="text" id="itemGold-${worldCount}" placeholder="120kk" class="w-full p-2.5 rounded-lg input-dark text-sm">
-                        </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-purple-400 uppercase tracking-widest mb-1.5 ml-1">Preço TC</label>
+                        <input type="text" id="tcGold-${worldCount}" placeholder="Ex: 38.000" 
+                               class="w-full p-3 rounded-xl input-dark text-sm font-bold">
                     </div>
 
-                    <label class="flex items-center gap-3 p-3 rounded-lg bg-white/5 cursor-pointer hover:bg-white/10 transition-colors mt-4">
-                        <input type="checkbox" id="transfer-${worldCount}" class="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
-                        <span class="text-xs font-semibold text-slate-300">Incluir Transfer (990 TC)</span>
+                    <div>
+                        <label class="block text-[9px] font-black text-purple-400 uppercase tracking-widest mb-1.5 ml-1">Preço do Item</label>
+                        <input type="text" id="itemGold-${worldCount}" placeholder="Ex: 120.000.000" 
+                               class="w-full p-3 rounded-xl input-dark text-sm font-bold">
+                    </div>
+
+                    <label class="flex items-center gap-3 p-4 rounded-2xl bg-white/5 cursor-pointer hover:bg-white/10 border border-white/5 transition-all mt-2">
+                        <input type="checkbox" id="transfer-${worldCount}" class="h-5 w-5 rounded bg-slate-800 border-slate-600 text-purple-600 focus:ring-purple-500">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Incluir 990 TC Transfer</span>
                     </label>
                 </div>
             `;
             document.getElementById('worldsContainer').appendChild(card);
         }
 
-        function removeWorld(id) {
+        function removeWorld(id) { 
             document.getElementById(`world-card-${id}`)?.remove();
         }
 
         function resetSearch() {
-            // Limpa campos globais
             document.getElementById('globalItemName').value = "";
             document.getElementById('globalCoin25').value = "";
-            
-            // Remove todos os cards de mundo
             document.getElementById('worldsContainer').innerHTML = "";
             worldCount = 0;
-            
-            // Esconde resultados
             document.getElementById('resultsWrapper').classList.add('hidden');
-            
-            // Inicia com 2 mundos vazios por padrão
-            addWorld();
-            addWorld();
+            addWorld(); addWorld();
         }
 
         function calculate() {
-            const itemName = document.getElementById('globalItemName').value || "Item Indefinido";
+            const itemName = document.getElementById('globalItemName').value || "Item";
             const brlFor25Tc = parseTibiaGold(document.getElementById('globalCoin25').value);
             const worldCards = document.querySelectorAll('[id^="world-card-"]');
             
-            if (brlFor25Tc <= 0) {
-                document.getElementById('globalCoin25').classList.add('border-red-500');
-                setTimeout(() => document.getElementById('globalCoin25').classList.remove('border-red-500'), 2000);
-                return;
-            }
+            if (brlFor25Tc <= 0) return;
 
             let data = [];
-
             worldCards.forEach(card => {
                 const id = card.id.split('-').pop();
                 const name = document.getElementById(`name-${id}`).value || `Servidor ${id}`;
@@ -258,19 +240,11 @@
                     const totalCoins = itemInCoins + transferCoins;
                     const coinUnitPrice = brlFor25Tc / 25;
                     const totalBrl = totalCoins * coinUnitPrice;
-
-                    data.push({
-                        name,
-                        itemInCoins,
-                        transferCoins,
-                        totalCoins,
-                        totalBrl
-                    });
+                    data.push({ name, itemInCoins, transferCoins, totalCoins, totalBrl });
                 }
             });
 
             if (data.length === 0) return;
-
             data.sort((a, b) => a.totalBrl - b.totalBrl);
             renderResults(itemName, data);
             saveToHistory(itemName, data);
@@ -287,97 +261,75 @@
             data.forEach((w, index) => {
                 const diff = w.totalBrl - cheapest;
                 const isBest = index === 0;
-                
                 const card = document.createElement('div');
-                card.className = `glass-card rounded-2xl p-6 relative overflow-hidden transition-all duration-500 ${isBest ? 'gold-border scale-105 z-10' : 'opacity-80'}`;
-                
-                let medal = "";
-                if (index === 0) medal = '<span class="text-3xl medal-1">🥇</span>';
-                else if (index === 1) medal = '<span class="text-3xl medal-2">🥈</span>';
-                else if (index === 2) medal = '<span class="text-3xl medal-3">🥉</span>';
+                card.className = `glass-card rounded-3xl p-7 relative transition-all duration-500 ${isBest ? 'scale-105 z-10 border-purple-500/50 shadow-purple-900/40 shadow-2xl' : 'opacity-60'}`;
+
+                let medal = index === 0 ? '<span class="text-4xl medal-1">🥇</span>' : 
+                            index === 1 ? '<span class="text-4xl medal-2">🥈</span>' : 
+                            index === 2 ? '<span class="text-4xl medal-3">🥉</span>' : "";
 
                 card.innerHTML = `
-                    <div class="flex justify-between items-start mb-6">
+                    <div class="flex justify-between items-start mb-8">
                         <div>
-                            <h5 class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Rank #${index + 1}</h5>
-                            <h4 class="text-2xl font-black text-white truncate max-w-[200px]">${w.name}</h4>
+                            <h5 class="text-purple-500 text-[10px] font-black uppercase mb-1">#${index + 1}</h5>
+                            <h4 class="text-2xl font-black text-white truncate max-w-[150px] italic">${w.name}</h4>
                         </div>
                         ${medal}
                     </div>
-
-                    <div class="space-y-3 mb-6">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Item (Coins)</span>
-                            <span class="font-mono text-white">${w.itemInCoins.toFixed(0)}</span>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-500 font-bold">ITEM</span>
+                            <span class="font-mono text-slate-200">${Math.floor(w.itemInCoins)} TC</span>
                         </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Transferência</span>
-                            <span class="font-mono ${w.transferCoins > 0 ? 'text-orange-400' : 'text-slate-600'}">${w.transferCoins}</span>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-500 font-bold">TRANSFER</span>
+                            <span class="font-mono ${w.transferCoins > 0 ? 'text-purple-400' : 'text-slate-600'}">${w.transferCoins} TC</span>
                         </div>
-                        <div class="h-px bg-white/5 my-2"></div>
-                        <div class="flex justify-between items-end">
-                            <span class="text-xs font-bold text-indigo-300 uppercase">Investimento Total</span>
-                            <div class="text-right">
-                                <div class="text-xs text-slate-500 font-mono">${w.totalCoins.toFixed(0)} TC</div>
-                                <div class="text-xl font-black text-indigo-400">${formatBRL(w.totalBrl)}</div>
-                            </div>
+                        <div class="h-px bg-white/5 w-full"></div>
+                        <div class="flex flex-col pt-2">
+                            <span class="text-3xl font-black text-white">${formatBRL(w.totalBrl)}</span>
+                            <span class="text-[11px] text-purple-400/60 font-mono italic">${Math.floor(w.totalCoins)} Coins</span>
                         </div>
                     </div>
-
-                    ${!isBest ? `
-                        <div class="bg-red-500/10 text-red-400 text-[10px] font-bold p-2 rounded text-center uppercase tracking-tighter">
-                            + ${formatBRL(diff)} de prejuízo
-                        </div>
-                    ` : `
-                        <div class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold p-2 rounded text-center uppercase tracking-widest border border-emerald-500/30">
-                            🔥 Melhor Opção
-                        </div>
-                    `}
+                    ${isBest ? 
+                        `<div class="bg-purple-600 text-white text-[10px] font-black py-3 rounded-xl text-center uppercase tracking-[0.3em]">MELHOR OPÇÃO</div>` : 
+                        `<div class="bg-red-500/10 text-red-400 text-[10px] font-black py-3 rounded-xl text-center uppercase">+ ${formatBRL(diff)}</div>`
+                    }
                 `;
                 grid.appendChild(card);
             });
-
             window.scrollTo({ top: wrapper.offsetTop - 50, behavior: 'smooth' });
         }
 
         function saveToHistory(itemName, results) {
             const history = JSON.parse(localStorage.getItem('frav_history') || '[]');
-            const entry = {
-                id: Date.now(),
-                timestamp: new Date().toLocaleString(),
-                itemName,
-                bestWorld: results[0].name,
-                bestValue: results[0].totalBrl,
-                fullData: results
-            };
-            history.unshift(entry);
-            localStorage.setItem('frav_history', JSON.stringify(history.slice(0, 15)));
+            history.unshift({ 
+                id: Date.now(), 
+                timestamp: new Date().toLocaleDateString('pt-BR', {hour: '2-digit', minute:'2-digit'}), 
+                itemName, 
+                bestWorld: results[0].name, 
+                bestValue: results[0].totalBrl, 
+                fullData: results 
+            });
+            localStorage.setItem('frav_history', JSON.stringify(history.slice(0, 10)));
             loadHistory();
         }
 
         function loadHistory() {
             const historyList = document.getElementById('historyList');
             const history = JSON.parse(localStorage.getItem('frav_history') || '[]');
-            
-            if (history.length === 0) {
-                historyList.innerHTML = '<p class="text-center py-8 text-slate-600 text-sm italic">Nenhuma consulta realizada ainda.</p>';
-                return;
-            }
-
+            if (history.length === 0) { historyList.innerHTML = '<p class="text-center text-slate-600 text-xs uppercase font-bold">Vazio</p>'; return; }
             historyList.innerHTML = history.map(item => `
-                <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all cursor-pointer group" onclick="restoreHistory(${item.id})">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-indigo-500/20 text-indigo-400 w-10 h-10 rounded-full flex items-center justify-center font-bold">
-                            ${item.itemName.charAt(0)}
-                        </div>
+                <div onclick="restoreHistory(${item.id})" class="flex items-center justify-between p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-purple-500/20 transition-all cursor-pointer">
+                    <div class="flex items-center gap-5">
+                        <div class="bg-purple-900 text-white w-10 h-10 rounded-xl flex items-center justify-center font-black">${item.itemName.charAt(0)}</div>
                         <div>
-                            <div class="font-bold text-white text-sm">${item.itemName}</div>
-                            <div class="text-[10px] text-slate-500 font-medium">${item.timestamp} • Melhor em: <span class="text-indigo-300">${item.bestWorld}</span></div>
+                            <div class="font-black text-white italic">${item.itemName}</div>
+                            <div class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">${item.timestamp} • ${item.bestWorld}</div>
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-sm font-black text-indigo-400">${formatBRL(item.bestValue)}</div>
-                        <div class="text-[10px] text-slate-500 group-hover:text-indigo-300 transition-colors uppercase font-bold">Ver detalhes →</div>
+                        <div class="text-sm font-black text-purple-400">${formatBRL(item.bestValue)}</div>
                     </div>
                 </div>
             `).join('');
@@ -387,23 +339,19 @@
             const history = JSON.parse(localStorage.getItem('frav_history') || '[]');
             const entry = history.find(h => h.id === id);
             if (entry) {
+                document.getElementById('globalItemName').value = entry.itemName;
                 renderResults(entry.itemName, entry.fullData);
             }
         }
 
         function clearHistory() {
-            if(confirm("Deseja realmente apagar todo o histórico de comparações?")) {
-                localStorage.removeItem('frav_history');
-                loadHistory();
+            if(confirm("Limpar histórico?")) {
+                localStorage.removeItem('frav_history'); loadHistory();
                 document.getElementById('resultsWrapper').classList.add('hidden');
             }
         }
 
-        window.onload = () => {
-            addWorld();
-            addWorld();
-            loadHistory();
-        };
+        window.onload = () => { addWorld(); addWorld(); loadHistory(); };
     </script>
 </body>
 </html>
