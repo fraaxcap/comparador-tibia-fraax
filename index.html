@@ -3,64 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comparador RubinOT</title>
+<title>RubinOT Comparator Pro</title>
 
 <style>
 body{
-    font-family: Arial;
-    background:#0f172a;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#0f172a,#1e293b);
     color:white;
     padding:20px;
 }
-h1{text-align:center;}
-.container{
-    max-width:900px;
-    margin:auto;
-    background:#1e293b;
-    padding:20px;
-    border-radius:12px;
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
 }
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+.world{
+    background:#1f2937;
+    padding:20px;
+    border-radius:14px;
+    margin-bottom:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.4);
+}
+
 input{
     width:100%;
-    padding:8px;
-    margin:5px 0;
-    border-radius:6px;
-    border:none;
-}
-button{
     padding:10px;
-    border:none;
+    margin:6px 0;
     border-radius:8px;
-    background:#22c55e;
+    border:none;
+    background:#111827;
+    color:white;
+}
+
+button{
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
     font-weight:bold;
     cursor:pointer;
 }
-.world{
-    background:#334155;
-    padding:15px;
-    margin-top:15px;
-    border-radius:10px;
+
+.addBtn{ background:#22c55e; }
+.calcBtn{ background:#3b82f6; }
+.removeBtn{ background:#ef4444; margin-top:10px; }
+
+.transferBox{
+    margin-top:10px;
 }
-.result{
-    margin-top:20px;
+
+.results{
+    margin-top:40px;
+}
+
+.resultCard{
     background:#111827;
-    padding:15px;
-    border-radius:10px;
+    padding:20px;
+    border-radius:14px;
+    margin-bottom:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+
+.best{
+    border:2px solid #22c55e;
+    box-shadow:0 0 20px rgba(34,197,94,0.5);
+}
+
+.highlight{
+    color:#22c55e;
+    font-weight:bold;
 }
 </style>
 </head>
 <body>
 
-<h1>Comparador RubinOT</h1>
+<h1>RubinOT Comparator Pro</h1>
 
 <div class="container">
 
 <div id="worlds"></div>
 
-<button onclick="addWorld()">Adicionar Mundo</button>
-<button onclick="calculate()">Calcular</button>
+<button class="addBtn" onclick="addWorld()">Adicionar Mundo</button>
+<button class="calcBtn" onclick="calculate()">Calcular Comparativo</button>
 
-<div id="results" class="result"></div>
+<div id="results" class="results"></div>
 
 </div>
 
@@ -69,83 +100,108 @@ let worldCount = 0;
 
 function addWorld(){
     worldCount++;
+
     const div = document.createElement("div");
     div.className="world";
-    div.innerHTML = `
+    div.id="world"+worldCount;
+
+    div.innerHTML=`
         <h3>Mundo ${worldCount}</h3>
 
-        <label>Nome do Mundo:</label>
-        <input type="text" id="name${worldCount}" placeholder="Ex: Draco">
+        <input type="text" id="name${worldCount}" placeholder="Nome do Mundo">
 
-        <label>Preço da Tibia Coin (em gold):</label>
-        <input type="number" id="tcGold${worldCount}" placeholder="Ex: 50000">
+        <input type="number" id="tcGold${worldCount}" placeholder="Preço da Coin (gold)" min="1" step="1">
 
-        <label>Valor do Item (em KK):</label>
-        <input type="number" id="itemKK${worldCount}" placeholder="Ex: 300">
+        <input type="number" id="itemKK${worldCount}" placeholder="Valor do Item (KK inteiro)" min="1" step="1">
 
-        <label>Valor atual de 25 Coins (R$):</label>
-        <input type="number" id="coin25${worldCount}" placeholder="Ex: 2.35" step="0.01">
+        <input type="number" id="coin25${worldCount}" placeholder="Valor de 25 Coins (R$)" min="0.01" step="0.01">
 
-        <label>
-            <input type="checkbox" id="transfer${worldCount}">
-            Incluir Transfer (990 Coins)
-        </label>
+        <div class="transferBox">
+            <label>
+                <input type="checkbox" id="transfer${worldCount}">
+                Incluir Transfer (990 Coins)
+            </label>
+        </div>
+
+        <button class="removeBtn" onclick="removeWorld(${worldCount})">Remover</button>
     `;
+
     document.getElementById("worlds").appendChild(div);
+}
+
+function removeWorld(id){
+    document.getElementById("world"+id)?.remove();
 }
 
 function calculate(){
 
-    let html = "";
+    let worldsData = [];
+    const worlds = document.querySelectorAll(".world");
 
-    for(let i=1;i<=worldCount;i++){
+    worlds.forEach(world=>{
 
-        const name = document.getElementById(`name${i}`).value;
-        const tcGold = parseFloat(document.getElementById(`tcGold${i}`).value);
-        const itemKK = parseFloat(document.getElementById(`itemKK${i}`).value);
-        const coin25 = parseFloat(document.getElementById(`coin25${i}`).value);
-        const includeTransfer = document.getElementById(`transfer${i}`).checked;
+        const id = world.id.replace("world","");
+        const name = document.getElementById(`name${id}`).value;
+        const tcGold = parseFloat(document.getElementById(`tcGold${id}`).value);
+        const itemKK = parseInt(document.getElementById(`itemKK${id}`).value);
+        const coin25 = parseFloat(document.getElementById(`coin25${id}`).value);
+        const includeTransfer = document.getElementById(`transfer${id}`).checked;
 
-        if(!name || !tcGold || !itemKK || !coin25) continue;
+        if(!name || !tcGold || !itemKK || !coin25) return;
 
-        // Conversões
         const itemGold = itemKK * 1000000;
         const itemCoins = itemGold / tcGold;
+        const coinUnit = coin25 / 25;
 
-        const coinUnitValue = coin25 / 25;
-
-        const itemReais = itemCoins * coinUnitValue;
-
-        let transferCoins = 0;
-        let transferReais = 0;
-
-        if(includeTransfer){
-            transferCoins = 990;
-            transferReais = transferCoins * coinUnitValue;
-        }
+        const transferCoins = includeTransfer ? 990 : 0;
 
         const totalCoins = itemCoins + transferCoins;
-        const totalReais = itemReais + transferReais;
+        const totalReais = totalCoins * coinUnit;
 
-        html += `
-        <p>
-        <strong>${name}</strong><br><br>
+        worldsData.push({
+            name,
+            itemCoins,
+            transferCoins,
+            totalCoins,
+            totalReais
+        });
+    });
 
-        🔹 Valor do Item em Coins: ${itemCoins.toFixed(0)}<br>
-        🔹 Valor do Item em R$: ${itemReais.toFixed(2)}<br><br>
+    if(worldsData.length === 0) return;
 
-        🔹 Transfer em Coins: ${transferCoins.toFixed(0)}<br>
-        🔹 Transfer em R$: ${transferReais.toFixed(2)}<br><br>
+    worldsData.sort((a,b)=>a.totalReais - b.totalReais);
 
-        🟢 TOTAL DE COINS: ${totalCoins.toFixed(0)}<br>
-        🟢 VALOR TOTAL EM R$: ${totalReais.toFixed(2)}
+    const cheapest = worldsData[0];
 
-        </p>
-        <hr>
+    let html="";
+
+    worldsData.forEach(world=>{
+
+        const diff = world.totalReais - cheapest.totalReais;
+
+        html+=`
+        <div class="resultCard ${world.name===cheapest.name ? "best" : ""}">
+            <h3>${world.name}</h3>
+
+            Item em Coins: ${world.itemCoins.toFixed(0)}<br>
+            Transfer em Coins: ${world.transferCoins}<br><br>
+
+            <span class="highlight">
+            Total Coins: ${world.totalCoins.toFixed(0)}
+            </span><br>
+
+            <span class="highlight">
+            Total em R$: ${world.totalReais.toFixed(2)}
+            </span><br><br>
+
+            ${world.name!==cheapest.name ? 
+            `Diferença para o mais barato: R$ ${diff.toFixed(2)}` 
+            : `<span class="highlight">🔥 MAIS VANTAJOSO</span>`}
+        </div>
         `;
-    }
+    });
 
-    document.getElementById("results").innerHTML = html;
+    document.getElementById("results").innerHTML=html;
 }
 
 addWorld();
