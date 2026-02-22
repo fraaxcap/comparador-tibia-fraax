@@ -78,6 +78,7 @@
             border: 1px solid rgba(168, 85, 247, 0.1);
             color: white;
             transition: all 0.3s;
+            appearance: none; /* Remove seta padrão do select */
         }
 
         .input-dark:focus {
@@ -86,11 +87,30 @@
             box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.15);
         }
 
+        /* Estilo para as opções do select */
+        select.input-dark option {
+            background-color: #1a1a24;
+            color: white;
+        }
+
         .btn-gradient {
             background: linear-gradient(135deg, #9333ea 0%, #6b21a8 100%);
         }
 
         .mirror { transform: scaleX(-1); }
+
+        .party-btn {
+            background: rgba(168, 85, 247, 0.05);
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+        .party-btn.active {
+            background: #9333ea;
+            border-color: #a855f7;
+            color: white;
+            box-shadow: 0 0 10px rgba(147, 51, 234, 0.4);
+        }
     </style>
 </head>
 <body class="p-4 md:p-10">
@@ -127,7 +147,6 @@
     </header>
 
     <main class="max-w-6xl mx-auto space-y-8">
-        <!-- Seção Principal de Formulário -->
         <section class="glass-card rounded-3xl p-6 md:p-8 border-t border-purple-500/30">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 items-end">
                 <div class="lg:col-span-4">
@@ -179,6 +198,13 @@
         let worldCount = 0;
         const TRANSFER_COST = 990;
         const STORAGE_KEY = 'frav_history_v4'; 
+        
+        // Lista oficial de mundos
+        const WORLD_LIST = [
+            "Auroria", "Belaria", "Bellum", "Elysian", "Lunarian", 
+            "Mystian", "Serenian", "Serenian II", "Serenian III", 
+            "Serenian IV", "Solarian", "Spectrum", "Tenebrium", "Vesperia"
+        ];
 
         function parseTibiaValue(input) {
             if (!input) return 0;
@@ -205,41 +231,75 @@
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
         }
 
-        function addWorld(name = "", tc = "", item = "", transfer = false) {
+        function toggleTransferParty(cardId, memberCount) {
+            const card = document.getElementById(`card-${cardId}`);
+            const buttons = card.querySelectorAll('.party-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            card.querySelector(`.party-btn[data-members="${memberCount}"]`).classList.add('active');
+            card.dataset.party = memberCount;
+        }
+
+        function addWorld(name = "", tc = "", item = "", transfer = false, party = 1) {
             worldCount++;
             const card = document.createElement('div');
             card.className = 'glass-card world-card rounded-3xl p-6 relative animate-in slide-in-from-bottom-5 duration-300';
             card.dataset.id = worldCount;
+            card.dataset.party = party;
             card.id = `card-${worldCount}`;
+            
+            // Gera as opções do select
+            const worldOptions = WORLD_LIST.map(w => `<option value="${w}" ${w === name ? 'selected' : ''}>${w}</option>`).join('');
+
             card.innerHTML = `
                 <button type="button" onclick="document.getElementById('card-${worldCount}').remove()" class="absolute top-6 right-6 text-slate-600 hover:text-red-400 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
                 <div class="space-y-4">
-                    <div>
+                    <div class="relative">
                         <label class="block text-[9px] font-black text-purple-400 uppercase mb-1 ml-1 tracking-widest">Nome do Mundo</label>
-                        <input type="text" class="world-name w-full p-4 rounded-xl input-dark text-lg font-bold" placeholder="Ex: Vesperia" value="${name}">
+                        <select class="world-name w-full p-4 pr-10 rounded-xl input-dark text-lg font-bold">
+                            <option value="" disabled ${!name ? 'selected' : ''}>Selecione...</option>
+                            ${worldOptions}
+                        </select>
+                        <div class="pointer-events-none absolute right-4 top-[70%] -translate-y-1/2 text-purple-400">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                        </div>
                     </div>
+                    
                     <div>
                         <label class="block text-[9px] font-black text-purple-400 uppercase mb-1 ml-1 tracking-widest">Preço do TC (Gold)</label>
                         <input type="text" class="tc-gold w-full p-4 rounded-xl input-dark text-lg font-bold" placeholder="Ex: 38k" value="${tc}">
                     </div>
+
                     <div>
                         <label class="block text-[9px] font-black text-purple-400 uppercase mb-1 ml-1 tracking-widest">Preço do Item (Gold)</label>
                         <input type="text" class="item-gold w-full p-4 rounded-xl input-dark text-lg font-bold" placeholder="Ex: 120kk" value="${item}">
                     </div>
-                    <label class="flex items-center gap-3 p-4 rounded-2xl bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
-                        <input type="checkbox" class="transfer-check h-5 w-5 rounded bg-slate-800 border-slate-600 text-purple-600" ${transfer ? 'checked' : ''}>
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-tight">Incluir Transfer (990 TC)</span>
-                    </label>
+                    
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-3 p-4 rounded-2xl bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                            <input type="checkbox" class="transfer-check h-5 w-5 rounded bg-slate-800 border-slate-600 text-purple-600" ${transfer ? 'checked' : ''} onchange="const p = this.closest('.world-card').querySelector('.party-selector'); this.checked ? p.classList.remove('opacity-20','pointer-events-none') : p.classList.add('opacity-20','pointer-events-none')">
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-tight">Incluir Transfer (990 TC)</span>
+                        </label>
+                        
+                        <div class="party-selector flex flex-col gap-2 p-3 rounded-2xl bg-black/40 border border-white/5 transition-all ${transfer ? '' : 'opacity-20 pointer-events-none'}">
+                            <span class="text-[9px] font-black text-slate-500 uppercase ml-1 tracking-widest">Custo da Transfer para:</span>
+                            <div class="grid grid-cols-4 gap-2">
+                                ${[1, 2, 3, 4].map(num => `
+                                    <button type="button" onclick="toggleTransferParty(${worldCount}, ${num})" 
+                                            class="party-btn py-3 rounded-xl text-[11px] font-black transition-all ${party == num ? 'active' : ''}" 
+                                            data-members="${num}">
+                                        ${num}P
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
             document.getElementById('worldsContainer').appendChild(card);
         }
 
-        /**
-         * Realiza o cálculo e salva um NOVO item no histórico.
-         */
         function calculate() {
             const results = performCalculation();
             if (!results) return;
@@ -247,7 +307,6 @@
             const itemName = document.getElementById('globalItemName').value || "Item";
             const brlFor25TcRaw = document.getElementById('globalCoin25').value;
 
-            // Coleta dados crus para salvar no histórico apenas no cálculo manual
             const worldCards = document.querySelectorAll('.world-card');
             let rawData = [];
             worldCards.forEach(card => {
@@ -255,7 +314,8 @@
                     name: card.querySelector('.world-name').value,
                     tcGoldStr: card.querySelector('.tc-gold').value,
                     itemGoldStr: card.querySelector('.item-gold').value,
-                    hasTransfer: card.querySelector('.transfer-check').checked
+                    hasTransfer: card.querySelector('.transfer-check').checked,
+                    party: parseInt(card.dataset.party) || 1
                 });
             });
 
@@ -263,16 +323,12 @@
             saveHistory(itemName, brlFor25TcRaw, results.sorted, rawData);
         }
 
-        /**
-         * Função interna que apenas processa os números e retorna o resultado.
-         * Separada para podermos chamar sem salvar no histórico.
-         */
         function performCalculation() {
             const brlFor25TcRaw = document.getElementById('globalCoin25').value;
             const brlFor25Tc = parseTibiaValue(brlFor25TcRaw);
             
             if (brlFor25Tc <= 0) {
-                alert("Por favor, introduz o valor de 25 Tibia Coins em R$.");
+                alert("Por favor, informe o valor de 25 Tibia Coins em R$.");
                 return null;
             }
 
@@ -284,23 +340,26 @@
                 const tcGoldStr = card.querySelector('.tc-gold').value;
                 const itemGoldStr = card.querySelector('.item-gold').value;
                 const hasTransfer = card.querySelector('.transfer-check').checked;
+                const partySize = parseInt(card.dataset.party) || 1;
+
+                if (!nameStr) return; // Pula se não selecionar mundo
 
                 const tcGoldNum = parseTibiaValue(tcGoldStr);
                 const itemGoldNum = parseTibiaValue(itemGoldStr);
 
                 if (tcGoldNum > 0 && itemGoldNum > 0) {
                     const itemCoins = itemGoldNum / tcGoldNum;
-                    const transferCoins = hasTransfer ? TRANSFER_COST : 0;
+                    const transferCoins = hasTransfer ? (TRANSFER_COST / partySize) : 0;
                     const totalCoins = itemCoins + transferCoins;
                     const unitPrice = brlFor25Tc / 25;
                     const totalBrl = totalCoins * unitPrice;
 
-                    results.push({ name: nameStr || "Servidor", itemCoins, transferCoins, totalCoins, totalBrl });
+                    results.push({ name: nameStr, itemCoins, transferCoins, totalCoins, totalBrl, partySize });
                 }
             });
 
             if (results.length === 0) {
-                alert("Preencha corretamente os valores de TC e Item nos cards dos servidores.");
+                alert("Preencha corretamente os valores de TC e Item nos servidores selecionados.");
                 return null;
             }
 
@@ -326,12 +385,15 @@
                 
                 card.innerHTML = `
                     <div class="flex justify-between items-start mb-6">
-                        <h4 class="text-xl font-black text-white italic truncate pr-2">${w.name}</h4>
+                        <div class="truncate pr-2">
+                             <h4 class="text-xl font-black text-white italic truncate">${w.name}</h4>
+                             ${w.transferCoins > 0 && w.partySize > 1 ? `<span class="text-[8px] font-black text-purple-400 uppercase tracking-tighter">Rateio para ${w.partySize} Pessoas</span>` : ''}
+                        </div>
                         <span class="text-2xl">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : ''}</span>
                     </div>
                     <div class="space-y-3 mb-6">
                         <div class="flex justify-between text-xs"><span class="text-slate-500 font-bold uppercase">Item</span><span class="text-white font-mono">${Math.floor(w.itemCoins)} TC</span></div>
-                        <div class="flex justify-between text-xs"><span class="text-slate-500 font-bold uppercase">Transfer</span><span class="${w.transferCoins > 0 ? 'text-purple-400' : 'text-slate-600'} font-mono">${w.transferCoins} TC</span></div>
+                        <div class="flex justify-between text-xs"><span class="text-slate-500 font-bold uppercase">Transfer</span><span class="${w.transferCoins > 0 ? 'text-purple-400' : 'text-slate-600'} font-mono">${Math.floor(w.transferCoins)} TC</span></div>
                         <div class="pt-3 border-t border-white/5">
                             <div class="text-3xl font-black text-white">${formatBRL(w.totalBrl)}</div>
                             <div class="text-[10px] text-purple-400 font-mono font-bold">${Math.floor(w.totalCoins)} TOTAL COINS</div>
@@ -408,24 +470,18 @@
                     </div>
                 `;
                 
-                // Carregar os dados de volta nos inputs SEM salvar novo histórico
                 itemDiv.querySelector('.history-click-area').onclick = () => {
-                    // 1. Preenche campos globais
                     document.getElementById('globalItemName').value = h.itemName;
                     document.getElementById('globalCoin25').value = h.brlFor25TcRaw;
-
-                    // 2. Limpa o container de mundos
                     document.getElementById('worldsContainer').innerHTML = "";
                     worldCount = 0;
 
-                    // 3. Recria os cartões com os dados crus
                     if (h.rawData && h.rawData.length > 0) {
                         h.rawData.forEach(world => {
-                            addWorld(world.name, world.tcGoldStr, world.itemGoldStr, world.hasTransfer);
+                            addWorld(world.name, world.tcGoldStr, world.itemGoldStr, world.hasTransfer, world.party || 1);
                         });
                     }
 
-                    // 4. Apenas renderiza os resultados salvos (não recalcula para não duplicar no histórico)
                     renderResults(h.itemName, h.fullData);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 };
