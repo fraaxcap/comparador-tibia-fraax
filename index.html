@@ -178,7 +178,7 @@
     <script>
         let worldCount = 0;
         const TRANSFER_COST = 990;
-        const STORAGE_KEY = 'frav_history_v3';
+        const STORAGE_KEY = 'frav_history_v4'; 
 
         function parseTibiaValue(input) {
             if (!input) return 0;
@@ -205,7 +205,7 @@
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
         }
 
-        function addWorld() {
+        function addWorld(name = "", tc = "", item = "", transfer = false) {
             worldCount++;
             const card = document.createElement('div');
             card.className = 'glass-card world-card rounded-3xl p-6 relative animate-in slide-in-from-bottom-5 duration-300';
@@ -218,18 +218,18 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-[9px] font-black text-purple-400 uppercase mb-1 ml-1 tracking-widest">Nome do Mundo</label>
-                        <input type="text" class="world-name w-full p-4 rounded-xl input-dark text-lg font-bold" placeholder="Ex: Vesperia">
+                        <input type="text" class="world-name w-full p-4 rounded-xl input-dark text-lg font-bold" placeholder="Ex: Vesperia" value="${name}">
                     </div>
                     <div>
                         <label class="block text-[9px] font-black text-purple-400 uppercase mb-1 ml-1 tracking-widest">Preço do TC (Gold)</label>
-                        <input type="text" class="tc-gold w-full p-4 rounded-xl input-dark text-lg font-bold" placeholder="Ex: 38k">
+                        <input type="text" class="tc-gold w-full p-4 rounded-xl input-dark text-lg font-bold" placeholder="Ex: 38k" value="${tc}">
                     </div>
                     <div>
                         <label class="block text-[9px] font-black text-purple-400 uppercase mb-1 ml-1 tracking-widest">Preço do Item (Gold)</label>
-                        <input type="text" class="item-gold w-full p-4 rounded-xl input-dark text-lg font-bold" placeholder="Ex: 120kk">
+                        <input type="text" class="item-gold w-full p-4 rounded-xl input-dark text-lg font-bold" placeholder="Ex: 120kk" value="${item}">
                     </div>
                     <label class="flex items-center gap-3 p-4 rounded-2xl bg-white/5 cursor-pointer hover:bg-white/10 transition-colors">
-                        <input type="checkbox" class="transfer-check h-5 w-5 rounded bg-slate-800 border-slate-600 text-purple-600">
+                        <input type="checkbox" class="transfer-check h-5 w-5 rounded bg-slate-800 border-slate-600 text-purple-600" ${transfer ? 'checked' : ''}>
                         <span class="text-[10px] font-black text-slate-400 uppercase tracking-tight">Incluir Transfer (990 TC)</span>
                     </label>
                 </div>
@@ -237,45 +237,75 @@
             document.getElementById('worldsContainer').appendChild(card);
         }
 
+        /**
+         * Realiza o cálculo e salva um NOVO item no histórico.
+         */
         function calculate() {
+            const results = performCalculation();
+            if (!results) return;
+
             const itemName = document.getElementById('globalItemName').value || "Item";
-            const brlFor25TcInput = document.getElementById('globalCoin25').value;
-            const brlFor25Tc = parseTibiaValue(brlFor25TcInput);
+            const brlFor25TcRaw = document.getElementById('globalCoin25').value;
+
+            // Coleta dados crus para salvar no histórico apenas no cálculo manual
+            const worldCards = document.querySelectorAll('.world-card');
+            let rawData = [];
+            worldCards.forEach(card => {
+                rawData.push({
+                    name: card.querySelector('.world-name').value,
+                    tcGoldStr: card.querySelector('.tc-gold').value,
+                    itemGoldStr: card.querySelector('.item-gold').value,
+                    hasTransfer: card.querySelector('.transfer-check').checked
+                });
+            });
+
+            renderResults(itemName, results.sorted);
+            saveHistory(itemName, brlFor25TcRaw, results.sorted, rawData);
+        }
+
+        /**
+         * Função interna que apenas processa os números e retorna o resultado.
+         * Separada para podermos chamar sem salvar no histórico.
+         */
+        function performCalculation() {
+            const brlFor25TcRaw = document.getElementById('globalCoin25').value;
+            const brlFor25Tc = parseTibiaValue(brlFor25TcRaw);
             
             if (brlFor25Tc <= 0) {
                 alert("Por favor, introduz o valor de 25 Tibia Coins em R$.");
-                return;
+                return null;
             }
 
             const worldCards = document.querySelectorAll('.world-card');
             let results = [];
 
             worldCards.forEach(card => {
-                const nameInput = card.querySelector('.world-name');
-                const name = nameInput.value || "Servidor";
-                const tcGold = parseTibiaValue(card.querySelector('.tc-gold').value);
-                const itemGold = parseTibiaValue(card.querySelector('.item-gold').value);
+                const nameStr = card.querySelector('.world-name').value;
+                const tcGoldStr = card.querySelector('.tc-gold').value;
+                const itemGoldStr = card.querySelector('.item-gold').value;
                 const hasTransfer = card.querySelector('.transfer-check').checked;
 
-                if (tcGold > 0 && itemGold > 0) {
-                    const itemCoins = itemGold / tcGold;
+                const tcGoldNum = parseTibiaValue(tcGoldStr);
+                const itemGoldNum = parseTibiaValue(itemGoldStr);
+
+                if (tcGoldNum > 0 && itemGoldNum > 0) {
+                    const itemCoins = itemGoldNum / tcGoldNum;
                     const transferCoins = hasTransfer ? TRANSFER_COST : 0;
                     const totalCoins = itemCoins + transferCoins;
                     const unitPrice = brlFor25Tc / 25;
                     const totalBrl = totalCoins * unitPrice;
 
-                    results.push({ name, itemCoins, transferCoins, totalCoins, totalBrl });
+                    results.push({ name: nameStr || "Servidor", itemCoins, transferCoins, totalCoins, totalBrl });
                 }
             });
 
             if (results.length === 0) {
                 alert("Preencha corretamente os valores de TC e Item nos cards dos servidores.");
-                return;
+                return null;
             }
 
-            results.sort((a, b) => a.totalBrl - b.totalBrl);
-            renderResults(itemName, results);
-            saveHistory(itemName, results);
+            const sorted = [...results].sort((a, b) => a.totalBrl - b.totalBrl);
+            return { sorted };
         }
 
         function renderResults(itemName, data) {
@@ -320,7 +350,7 @@
             }, 100);
         }
 
-        function saveHistory(itemName, results) {
+        function saveHistory(itemName, brlFor25TcRaw, results, rawData) {
             let history = [];
             try {
                 history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
@@ -330,9 +360,11 @@
                 id: Date.now(),
                 time: new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'}),
                 itemName,
+                brlFor25TcRaw, 
                 bestWorld: results[0].name,
                 bestValue: results[0].totalBrl,
-                fullData: results
+                fullData: results,
+                rawData: rawData 
             };
             history.unshift(newItem);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(0, 10)));
@@ -358,7 +390,10 @@
                 
                 itemDiv.innerHTML = `
                     <div class="flex flex-col cursor-pointer flex-1 history-click-area">
-                        <span class="font-black text-white italic group-hover:text-purple-400 transition-colors">${h.itemName}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-black text-white italic group-hover:text-purple-400 transition-colors">${h.itemName}</span>
+                            <span class="bg-purple-500/20 text-purple-400 text-[8px] px-1.5 py-0.5 rounded font-black uppercase">Editar</span>
+                        </div>
                         <span class="text-[9px] text-slate-500 uppercase font-bold tracking-tighter">${h.time} • Melhor: ${h.bestWorld}</span>
                     </div>
                     <div class="flex items-center gap-4">
@@ -373,7 +408,28 @@
                     </div>
                 `;
                 
-                itemDiv.querySelector('.history-click-area').onclick = () => renderResults(h.itemName, h.fullData);
+                // Carregar os dados de volta nos inputs SEM salvar novo histórico
+                itemDiv.querySelector('.history-click-area').onclick = () => {
+                    // 1. Preenche campos globais
+                    document.getElementById('globalItemName').value = h.itemName;
+                    document.getElementById('globalCoin25').value = h.brlFor25TcRaw;
+
+                    // 2. Limpa o container de mundos
+                    document.getElementById('worldsContainer').innerHTML = "";
+                    worldCount = 0;
+
+                    // 3. Recria os cartões com os dados crus
+                    if (h.rawData && h.rawData.length > 0) {
+                        h.rawData.forEach(world => {
+                            addWorld(world.name, world.tcGoldStr, world.itemGoldStr, world.hasTransfer);
+                        });
+                    }
+
+                    // 4. Apenas renderiza os resultados salvos (não recalcula para não duplicar no histórico)
+                    renderResults(h.itemName, h.fullData);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+
                 itemDiv.querySelector('.delete-history-btn').onclick = (e) => {
                     e.stopPropagation();
                     deleteHistoryItem(h.id);
