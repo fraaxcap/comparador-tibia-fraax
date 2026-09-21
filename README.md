@@ -1,1 +1,1 @@
-# comparador-tibia
+# comparador-
